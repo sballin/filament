@@ -30,7 +30,7 @@ def drange(start, stop, step):
         rMax += step
     return r
 
-def plots():
+def samplePlots():
     # Flux values for radius of flux loop expanding through xc
     xValsThrough = drange(0, 20, 0.01)
     fluxXThrough = []
@@ -91,12 +91,4 @@ def plots():
 
     plt.tight_layout()
     plt.show()
-
-plots()
-
-import MDSplus
-tree = MDSplus.Tree('hbtep2',69523)
-node = tree.getNode('sensors.magnetic.FB01_S1P')
-sensor_signal = tree.getNode('sensors.Magnetic:FB01_S1P').data()
-sensor_time = tree.getNode('sensors.Magnetic:FB01_S1P').dim_of().data()
 
