@@ -2,6 +2,7 @@ import math
 from scipy import special, constants
 from pylab import *
 
+"""Green's function for magnetic vector potential."""
 def green(x, z, xc, zc):
     zDiff = math.fabs(z-zc)
     denom = xc*xc + x*x + zDiff*zDiff + 2*x*xc
@@ -15,10 +16,12 @@ def green(x, z, xc, zc):
         fGreen = 0
     return fGreen
 
+"""Flux Phi=2*pi*A."""
 def flux(I, x, z, xc, zc):
     psi = 2*math.pi*x*I*green(x, z, xc, zc)
     return psi
 
+"""Get flux through a slice of a loop by specifying length."""
 def frac_flux(length, I, x, z, xc, zc):
     psi = length*I*green(x, z, xc, zc)
     return psi
@@ -32,6 +35,19 @@ def drange(start, stop, step):
         rMax += step
     return r
 
+"""Flux through sensor due to VF coil current."""
+def flux_val_calc(vf_signal, VFR, VFZ, sens_r, pos_z, sens_len, sens_width, sens_z_norm, coils):
+    flux_vals = []
+    for i in range(len(vf_signal)):
+        flux_vals.append(0)
+    for i_coil in range(len(VFR)-1):
+        i_sig = 0
+        for current in vf_signal:
+            flux_vals[i_sig] += coils*sens_z_norm*(frac_flux(sens_len, current, sens_r, pos_z, VFR[i_coil], VFZ[i_coil]) - frac_flux(sens_len, current, sens_r-sens_width, pos_z, VFR[i_coil], VFZ[i_coil]))
+            i_sig += 1
+    return flux_vals
+
+"""Show behavior of Green's function at edge cases."""
 def samplePlots():
     # Flux values for radius of flux loop expanding through xc
     xValsThrough = drange(0, 20, 0.01)
