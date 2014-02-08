@@ -46,10 +46,33 @@ for coil_index in range(len(VFR)-1):
 		flux_vals[sig_index] += coils*sensor_z_component*(frac_flux(sensor_length, current, sensor_r, sensor_z, VFR[coil_index], VFZ[coil_index]) - frac_flux(sensor_length, current, sensor_r-sensor_width, sensor_z, VFR[coil_index], VFZ[coil_index]))
 		sig_index += 1
 
+print flux_vals[20000]
+print sensor_signal[20000]
+print flux_vals[20000]/sensor_signal[20000]
+
+"""Calculate average ratio between sensor signal and calculated flux."""
+i = 0
+sum_ratios = 0
+ratios = []
+for f in flux_vals:
+	if sensor_signal[i] > 0.001:
+		ratio = sensor_signal[i]/f
+		ratios.append(ratio)
+		sum_ratios += ratio
+	i += 1
+avg_ratio = sum_ratios/len(ratios)
+print 'Inductance: %s' % avg_ratio
+
+"""Multiply flux values by inductance."""
+for i in range(len(flux_vals)):
+	flux_vals[i] *= avg_ratio
+
 def plot_magnetic():
 	plt.figure(1)
 	plt.plot(sensor_time, sensor_signal)
 	plt.show()
+	i+=1
+	i+=1
 
 def plot_vf():
 	plt.figure(1)
@@ -63,7 +86,6 @@ def plot_flux():
 	plt.legend()
 	plt.show()
 
-print '-------------------------'
 print '-------------------------'
 plot_flux()
 
