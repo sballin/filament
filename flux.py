@@ -21,6 +21,10 @@ def flux(I, x, z, xc, zc):
     psi = 2*math.pi*x*I*green(x, z, xc, zc)
     return psi
 
+def frac_flux(length, I, x, z, xc, zc):
+	psi = length*I*green(x, z, xc, zc)
+	return psi
+
 """Specify step size of range."""
 def drange(start, stop, step):
     r = []

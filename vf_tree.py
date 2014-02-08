@@ -35,12 +35,15 @@ pos_y = -0.92477993
 sensor_r = sqrt(pos_x*pos_x+pos_y*pos_y)
 sensor_z = -0.077077734
 sensor_z_component = 0.87206924
+coils = 20.0
+sensor_length = .1
+sensor_width = .004
 
 """Calculate flux."""
 for coil_index in range(len(VFR)-1):
 	sig_index = 0
-	for current  in vf_signal:
-		flux_vals[sig_index] += flux(current, sensor_r, sensor_z, VFR[coil_index], VFZ[coil_index])	
+	for current in vf_signal:
+		flux_vals[sig_index] += coils*sensor_z_component*(frac_flux(sensor_length, current, sensor_r, sensor_z, VFR[coil_index], VFZ[coil_index]) - frac_flux(sensor_length, current, sensor_r-sensor_width, sensor_z, VFR[coil_index], VFZ[coil_index]))
 		sig_index += 1
 
 def plot_magnetic():
@@ -61,10 +64,6 @@ def plot_flux():
 	plt.show()
 
 print '-------------------------'
-print len(vf_time)
-print len(flux_vals)
-print len(VFR)
-print len(VFZ)
 print '-------------------------'
 plot_flux()
 
