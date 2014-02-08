@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import math
-from scipy import special, constants
 from pylab import *
 import MDSplus
 from flux import *
