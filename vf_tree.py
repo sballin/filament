@@ -12,9 +12,9 @@ f = open('./coil_R_Z','r')
 ((OHR,OHZ),(VFR,VFZ),(SHR,SHZ)) = pickle.load(f)
 f.close()
 
-tree = MDSplus.Tree('hbtep2',69523)
+tree = MDSplus.Tree('hbtep2', 69523)
 
-node_magnetic = tree.getNode('sensors.magnetic.FB01_S1P')
+node_magnetic = tree.getNode('sensors.magnetic.FB01_S2P')
 sensor_signal = node_magnetic.data()
 sensor_time = node_magnetic.dim_of().data()
 
@@ -29,13 +29,18 @@ flux_vals = []
 for i in range(len(vf_signal)):
 	flux_vals.append(0)
 
-# DUMMY VALUES
-SENSR = sqrt(0.45480119*0.45480119+0.82048301*0.82048301)
-SENSZ = -0.15645621
+"""FB01_S2P data."""
+pos_x = -0.51261392
+pos_y = -0.92477993
+sensor_r = sqrt(pos_x*pos_x+pos_y*pos_y)
+sensor_z = -0.077077734
+sensor_z_component = 0.87206924
+
+"""Calculate flux."""
 for coil_index in range(len(VFR)-1):
 	sig_index = 0
 	for current  in vf_signal:
-		flux_vals[sig_index] += flux(current, SENSR, SENSZ, VFR[coil_index], VFZ[coil_index])	
+		flux_vals[sig_index] += flux(current, sensor_r, sensor_z, VFR[coil_index], VFZ[coil_index])	
 		sig_index += 1
 
 def plot_magnetic():
@@ -50,8 +55,9 @@ def plot_vf():
 
 def plot_flux():
 	plt.figure(1)
-	plt.plot(vf_time, flux_vals)
-	plt.plot(sensor_time, sensor_signal)
+	plt.plot(vf_time, flux_vals, label='calculated flux')
+	plt.plot(sensor_time, sensor_signal, label='sensor data')
+	plt.legend()
 	plt.show()
 
 print '-------------------------'
