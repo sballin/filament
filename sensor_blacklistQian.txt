@@ -1,0 +1,29 @@
+Some of the sensors are not functioning correctly and thus should not be included in the surface analysis.
+Here goes the names of those sensors.
+Blacklist :
+#FB02_S1R    # gain big
+FB03_S4R     # problem with zero is fixed. gain problem remains
+#FB04_S1R     # gain wrong
+#FB05_S2R     # signal start wrong
+FB08_S3R     # zero after 3ms
+#FB09_S1R     # gain smaller than expected 
+FB09_S2R     # gain seems 1.5 bigger than expected.
+#FB10_S1R     # noise
+#FB10_S2R     # noise
+#FB10_S3R      # gain is half as expected
+#FB10_S4R     # gain for fluctuation is big
+FB06_S2P     # startup wrong
+FB08_S4P     ## background ok, but fluctuation is much bigger in amplitude
+#FB09_S1P      #  gain 0.75 as expected.
+#FB10_S1P     # wrong signal
+#FB10_S2P     # wrong signal seems to cross talking with FB10_S1P
+#FB10_S3P     # wrong signal
+#FB10_S4P     # wrong signal noise
+PA1_S15R     # sinnal drift downward over time
+PA1_S29R     #  broken amp, disconnected.
+PA1_S01P      #signal start wrong
+PA1_S16P     # signal start wrong
+#PA1_S17P     # gain wrong, nearly zero
+PA2_S14P     # signal start wrong
+#TA03_S2R     # zero in 74545
+#TA03_S3P     # zero
