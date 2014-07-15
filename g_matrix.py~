@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+from flux import *
+import vf_tree
+from scipy import linalg
+import MDSplus
+
+
+
+blacklist = ['TA01_S2R', 'TA02_S2R', 'TA03_S2R', 'TA04_S2R', 'TA05_S2R', 'TA06_S2R', 'TA07_S2R', 'TA08_S2R', 'TA09_S2R', 'TA10_S2R', 'FB02_S1P', 'FB05_S1P', 'FB06_S2P', 'FB03_S4R', 'FB08_S3R', 'PA1_S09P', 'PA1_S25P', 'PA2_S08P', 'PA2_S09P', 'PA2_S25P', 'PA1_S29R']
+
+rows = 196
+columns = 4
+
+G = [[0.0 for x in xrange(columns)] for x in xrange(rows)] 
+I = [[0.0] for x in xrange(rows)]
+
+for i in range(
+
+#G_inv = linalg.pinv(G)
+
+

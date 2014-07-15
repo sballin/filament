@@ -55,7 +55,7 @@ def plot_comparison(sensor, sensor_time, sensor_signal, vf_time, field_vals, sca
     plt.suptitle(title)
     plt.legend()
     current_dir = os.getcwd()
-    savefig(current_dir + '/FB_images_integrate/' + sensor + '.png')
+    savefig(current_dir + '/FB_greens/' + sensor + '.png')
     plt.clf()
 
 # Get coil location data.
@@ -107,8 +107,12 @@ for i in range(len(sensor_names)):
     # Prep specs.
     pos_r = sqrt(pos_x[i]**2+pos_y[i]**2)
     n_r = sqrt(n_x[i]**2+n_y[i]**2)
+    if 'TA' in sensor: # radial TA sensors point inwards
+        if 'R' in sensor:
+            n_r = -1.0
+            print n_r
     # Calculate field.
-    (field_vals, sensor_signal) = B_signal(vf_signal, sensor_signal, VFR, VFZ, pos_r, pos_z[i], n_r, n_z[i])
+    field_vals = B_signal(vf_signal, VFR, VFZ, pos_r, pos_z[i], n_r, n_z[i])
     # Text output.
     avg_scaling = get_avg_scaling(field_vals, sensor_signal, scaling_threshold)
     print '------------------------------------------' + sensor + ':'
