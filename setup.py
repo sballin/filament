@@ -4,6 +4,6 @@ from distutils.core import setup
 from Cython.Build import cythonize
 
 setup(
-	name = 'flux',
-	ext_modules = cythonize("flux.pyx"),
+	name = 'fields',
+	ext_modules = cythonize("fields.pyx"),
 )

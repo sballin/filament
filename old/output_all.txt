@@ -1,0 +1,529 @@
+Calculated only using values above 0.0005
+------------------FB01_S1P:
+Measured field = 1.7682 * calculated field
+3.34 seconds elapsed.
+------------------FB01_S2P:
+Measured field = 0.9109 * calculated field
+3.32 seconds elapsed.
+------------------FB01_S3P:
+Measured field = 0.9031 * calculated field
+3.33 seconds elapsed.
+------------------FB01_S4P:
+Measured field = -2.866 * calculated field
+3.27 seconds elapsed.
+------------------FB02_S1P:
+Measured field = 2.6018 * calculated field
+3.26 seconds elapsed.
+------------------FB02_S2P:
+Measured field = 0.8420 * calculated field
+3.27 seconds elapsed.
+------------------FB02_S3P:
+Measured field = 1.0455 * calculated field
+3.37 seconds elapsed.
+------------------FB02_S4P:
+Measured field = -2.904 * calculated field
+3.34 seconds elapsed.
+------------------FB03_S1P:
+Measured field = 1.1859 * calculated field
+3.26 seconds elapsed.
+------------------FB03_S2P:
+Measured field = 0.8184 * calculated field
+3.26 seconds elapsed.
+------------------FB03_S3P:
+Measured field = 0.8324 * calculated field
+3.35 seconds elapsed.
+------------------FB03_S4P:
+Measured field = -1.619 * calculated field
+3.39 seconds elapsed.
+------------------FB04_S1P:
+Measured field = 0.8536 * calculated field
+3.35 seconds elapsed.
+------------------FB04_S2P:
+Measured field = 0.9392 * calculated field
+3.26 seconds elapsed.
+------------------FB04_S3P:
+Measured field = 0.9167 * calculated field
+3.34 seconds elapsed.
+------------------FB04_S4P:
+Measured field = -2.353 * calculated field
+3.27 seconds elapsed.
+------------------FB05_S1P:
+Measured field = 1.8360 * calculated field
+3.34 seconds elapsed.
+------------------FB05_S2P:
+Measured field = 0.7684 * calculated field
+3.25 seconds elapsed.
+------------------FB05_S3P:
+Measured field = 0.9271 * calculated field
+3.35 seconds elapsed.
+------------------FB05_S4P:
+Measured field = -1.991 * calculated field
+3.26 seconds elapsed.
+------------------FB06_S1P:
+Measured field = 1.0366 * calculated field
+3.34 seconds elapsed.
+------------------FB06_S2P:
+Measured field = -218.1 * calculated field
+3.32 seconds elapsed.
+------------------FB06_S3P:
+Measured field = 1.1578 * calculated field
+3.34 seconds elapsed.
+------------------FB06_S4P:
+Measured field = -3.196 * calculated field
+3.32 seconds elapsed.
+------------------FB07_S1P:
+Measured field = 1.7367 * calculated field
+3.34 seconds elapsed.
+------------------FB07_S2P:
+Measured field = 0.8461 * calculated field
+3.26 seconds elapsed.
+------------------FB07_S3P:
+Measured field = 0.9596 * calculated field
+3.34 seconds elapsed.
+------------------FB07_S4P:
+Measured field = -2.787 * calculated field
+3.34 seconds elapsed.
+------------------FB08_S1P:
+Measured field = 1.7021 * calculated field
+3.35 seconds elapsed.
+------------------FB08_S2P:
+Measured field = 0.9209 * calculated field
+3.26 seconds elapsed.
+------------------FB08_S3P:
+Measured field = 0.9088 * calculated field
+3.34 seconds elapsed.
+------------------FB08_S4P:
+Measured field = -2.856 * calculated field
+3.33 seconds elapsed.
+------------------FB09_S1P:
+Measured field = 0.8828 * calculated field
+3.38 seconds elapsed.
+------------------FB09_S2P:
+Measured field = 0.9419 * calculated field
+3.32 seconds elapsed.
+------------------FB09_S3P:
+Measured field = 1.0426 * calculated field
+3.35 seconds elapsed.
+------------------FB09_S4P:
+Measured field = -1.870 * calculated field
+3.32 seconds elapsed.
+------------------FB10_S1P:
+Measured field = 1.2452 * calculated field
+3.25 seconds elapsed.
+------------------FB10_S2P:
+Measured field = 999999 * calculated field
+3.30 seconds elapsed.
+------------------FB10_S3P:
+Measured field = 13.522 * calculated field
+3.32 seconds elapsed.
+------------------FB10_S4P:
+Measured field = 13.380 * calculated field
+3.34 seconds elapsed.
+------------------FB01_S1R:
+Measured field = 999999 * calculated field
+3.22 seconds elapsed.
+------------------FB01_S2R:
+Measured field = 999999 * calculated field
+3.23 seconds elapsed.
+------------------FB01_S3R:
+Measured field = 1.9810 * calculated field
+3.27 seconds elapsed.
+------------------FB01_S4R:
+Measured field = 0.9857 * calculated field
+3.38 seconds elapsed.
+------------------FB02_S1R:
+Measured field = 999999 * calculated field
+3.32 seconds elapsed.
+------------------FB02_S2R:
+Measured field = 999999 * calculated field
+3.22 seconds elapsed.
+------------------FB02_S3R:
+Measured field = 2.0094 * calculated field
+3.34 seconds elapsed.
+------------------FB02_S4R:
+Measured field = 0.8932 * calculated field
+3.26 seconds elapsed.
+------------------FB03_S1R:
+Measured field = 999999 * calculated field
+3.32 seconds elapsed.
+------------------FB03_S2R:
+Measured field = -63.25 * calculated field
+3.31 seconds elapsed.
+------------------FB03_S3R:
+Measured field = 1.9652 * calculated field
+3.33 seconds elapsed.
+------------------FB03_S4R:
+Measured field = 0.5761 * calculated field
+3.26 seconds elapsed.
+------------------FB04_S1R:
+Measured field = 999999 * calculated field
+3.31 seconds elapsed.
+------------------FB04_S2R:
+Measured field = 999999 * calculated field
+3.31 seconds elapsed.
+------------------FB04_S3R:
+Measured field = 1.7467 * calculated field
+3.38 seconds elapsed.
+------------------FB04_S4R:
+Measured field = 0.9409 * calculated field
+3.34 seconds elapsed.
+------------------FB05_S1R:
+Measured field = 999999 * calculated field
+3.30 seconds elapsed.
+------------------FB05_S2R:
+Measured field = 999999 * calculated field
+3.33 seconds elapsed.
+------------------FB05_S3R:
+Measured field = 1.9401 * calculated field
+3.27 seconds elapsed.
+------------------FB05_S4R:
+Measured field = 0.9722 * calculated field
+3.35 seconds elapsed.
+------------------FB06_S1R:
+Measured field = 999999 * calculated field
+3.31 seconds elapsed.
+------------------FB06_S2R:
+Measured field = 999999 * calculated field
+3.30 seconds elapsed.
+------------------FB06_S3R:
+Measured field = 1.6120 * calculated field
+3.26 seconds elapsed.
+------------------FB06_S4R:
+Measured field = 0.8431 * calculated field
+3.32 seconds elapsed.
+------------------FB07_S1R:
+Measured field = 999999 * calculated field
+3.31 seconds elapsed.
+------------------FB07_S2R:
+Measured field = 999999 * calculated field
+3.36 seconds elapsed.
+------------------FB07_S3R:
+Measured field = 1.8729 * calculated field
+3.33 seconds elapsed.
+------------------FB07_S4R:
+Measured field = 0.8206 * calculated field
+3.33 seconds elapsed.
+------------------FB08_S1R:
+Measured field = 999999 * calculated field
+3.29 seconds elapsed.
+------------------FB08_S2R:
+Measured field = 999999 * calculated field
+3.29 seconds elapsed.
+------------------FB08_S3R:
+Measured field = 1.6700 * calculated field
+3.28 seconds elapsed.
+------------------FB08_S4R:
+Measured field = 0.9308 * calculated field
+3.36 seconds elapsed.
+------------------FB09_S1R:
+Measured field = 999999 * calculated field
+3.33 seconds elapsed.
+------------------FB09_S2R:
+Measured field = 999999 * calculated field
+3.35 seconds elapsed.
+------------------FB09_S3R:
+Measured field = 1.8426 * calculated field
+3.31 seconds elapsed.
+------------------FB09_S4R:
+Measured field = 0.9631 * calculated field
+3.36 seconds elapsed.
+------------------FB10_S1R:
+Measured field = 999999 * calculated field
+3.34 seconds elapsed.
+------------------FB10_S2R:
+Measured field = -205.3 * calculated field
+3.34 seconds elapsed.
+------------------FB10_S3R:
+Measured field = 1.8756 * calculated field
+3.27 seconds elapsed.
+------------------FB10_S4R:
+Measured field = 0.9060 * calculated field
+3.34 seconds elapsed.
+------------------PA1_S01P:
+Measured field = 999999 * calculated field
+3.33 seconds elapsed.
+------------------PA1_S02P:
+Measured field = 0.0725 * calculated field
+3.35 seconds elapsed.
+------------------PA1_S03P:
+Measured field = 999999 * calculated field
+3.24 seconds elapsed.
+------------------PA1_S04P:
+Measured field = -1.076 * calculated field
+3.30 seconds elapsed.
+------------------PA1_S05P:
+Measured field = 999999 * calculated field
+3.33 seconds elapsed.
+------------------PA1_S06P:
+Measured field = 999999 * calculated field
+3.31 seconds elapsed.
+------------------PA1_S07P:
+Measured field = -4.270 * calculated field
+3.36 seconds elapsed.
+------------------PA1_S08P:
+Measured field = inf * calculated field
+3.37 seconds elapsed.
+------------------PA1_S09P:
+Measured field = -92.79 * calculated field
+3.32 seconds elapsed.
+------------------PA1_S10P:
+Measured field = 999999 * calculated field
+3.23 seconds elapsed.
+------------------PA1_S11P:
+Measured field = 2.1365 * calculated field
+3.28 seconds elapsed.
+------------------PA1_S12P:
+Measured field = 1.8215 * calculated field
+3.33 seconds elapsed.
+------------------PA1_S13P:
+Measured field = 0.1490 * calculated field
+3.29 seconds elapsed.
+------------------PA1_S14P:
+Measured field = 999999 * calculated field
+3.24 seconds elapsed.
+------------------PA1_S15P:
+Measured field = 999999 * calculated field
+3.24 seconds elapsed.
+------------------PA1_S16P:
+Measured field = -10.16 * calculated field
+3.36 seconds elapsed.
+------------------PA1_S17P:
+Measured field = 1.3241 * calculated field
+3.33 seconds elapsed.
+------------------PA1_S18P:
+Measured field = 1.5977 * calculated field
+3.29 seconds elapsed.
+------------------PA1_S19P:
+Measured field = 999999 * calculated field
+3.30 seconds elapsed.
+------------------PA1_S20P:
+Measured field = -0.967 * calculated field
+3.37 seconds elapsed.
+------------------PA1_S21P:
+Measured field = 999999 * calculated field
+3.25 seconds elapsed.
+------------------PA1_S22P:
+Measured field = 14.132 * calculated field
+3.26 seconds elapsed.
+------------------PA1_S23P:
+Measured field = 999999 * calculated field
+3.25 seconds elapsed.
+------------------PA1_S24P:
+Measured field = 999999 * calculated field
+3.25 seconds elapsed.
+------------------PA1_S25P:
+Measured field = inf * calculated field
+3.34 seconds elapsed.
+------------------PA1_S26P:
+Measured field = -26.15 * calculated field
+3.30 seconds elapsed.
+------------------PA1_S27P:
+Measured field = 0.1668 * calculated field
+3.25 seconds elapsed.
+------------------PA1_S28P:
+Measured field = 999999 * calculated field
+3.24 seconds elapsed.
+------------------PA1_S29P:
+Measured field = -52.05 * calculated field
+3.33 seconds elapsed.
+------------------PA1_S30P:
+Measured field = -31.02 * calculated field
+3.34 seconds elapsed.
+------------------PA1_S31P:
+Measured field = 999999 * calculated field
+3.24 seconds elapsed.
+------------------PA1_S32P:
+Measured field = -2.549 * calculated field
+3.24 seconds elapsed.
+------------------PA2_S01P:
+Measured field = 999999 * calculated field
+3.27 seconds elapsed.
+------------------PA2_S02P:
+Measured field = 999999 * calculated field
+3.27 seconds elapsed.
+------------------PA2_S03P:
+Measured field = -2.431 * calculated field
+3.26 seconds elapsed.
+------------------PA2_S04P:
+Measured field = 999999 * calculated field
+3.24 seconds elapsed.
+------------------PA2_S05P:
+Measured field = 999999 * calculated field
+3.27 seconds elapsed.
+------------------PA2_S06P:
+Measured field = 999999 * calculated field
+3.26 seconds elapsed.
+------------------PA2_S07P:
+Measured field = 999999 * calculated field
+3.25 seconds elapsed.
+------------------PA2_S08P:
+Measured field = 999999 * calculated field
+3.33 seconds elapsed.
+------------------PA2_S09P:
+Measured field = 23.699 * calculated field
+3.28 seconds elapsed.
+------------------PA2_S10P:
+Measured field = 999999 * calculated field
+3.26 seconds elapsed.
+------------------PA2_S11P:
+Measured field = 2.8438 * calculated field
+3.28 seconds elapsed.
+------------------PA2_S12P:
+Measured field = 2.1502 * calculated field
+3.25 seconds elapsed.
+------------------PA2_S13P:
+Measured field = -4.165 * calculated field
+3.25 seconds elapsed.
+------------------PA2_S14P:
+Measured field = 999999 * calculated field
+3.26 seconds elapsed.
+------------------PA2_S15P:
+Measured field = 1.3709 * calculated field
+3.28 seconds elapsed.
+------------------PA2_S16P:
+Measured field = 0.1497 * calculated field
+3.27 seconds elapsed.
+------------------PA2_S17P:
+Measured field = 1.1936 * calculated field
+3.28 seconds elapsed.
+------------------PA2_S18P:
+Measured field = 1.5744 * calculated field
+3.34 seconds elapsed.
+------------------PA2_S19P:
+Measured field = 2.0222 * calculated field
+3.30 seconds elapsed.
+------------------PA2_S20P:
+Measured field = 2.6884 * calculated field
+3.32 seconds elapsed.
+------------------PA2_S21P:
+Measured field = 999999 * calculated field
+3.25 seconds elapsed.
+------------------PA2_S22P:
+Measured field = 999999 * calculated field
+3.29 seconds elapsed.
+------------------PA2_S23P:
+Measured field = -18.20 * calculated field
+3.25 seconds elapsed.
+------------------PA2_S24P:
+Measured field = 999999 * calculated field
+3.24 seconds elapsed.
+------------------PA2_S25P:
+Measured field = 999999 * calculated field
+3.28 seconds elapsed.
+------------------PA2_S26P:
+Measured field = 1.9753 * calculated field
+3.35 seconds elapsed.
+------------------PA2_S27P:
+Measured field = 0.6164 * calculated field
+3.27 seconds elapsed.
+------------------PA2_S28P:
+Measured field = 999999 * calculated field
+3.25 seconds elapsed.
+------------------PA2_S29P:
+Measured field = 999999 * calculated field
+3.26 seconds elapsed.
+------------------PA2_S30P:
+Measured field = 999999 * calculated field
+3.36 seconds elapsed.
+------------------PA2_S31P:
+Measured field = 999999 * calculated field
+3.31 seconds elapsed.
+------------------PA2_S32P:
+Measured field = 999999 * calculated field
+3.26 seconds elapsed.
+------------------PA1_S01R:
+Measured field = -293.5 * calculated field
+3.28 seconds elapsed.
+------------------PA1_S03R:
+Measured field = 999999 * calculated field
+3.26 seconds elapsed.
+------------------PA1_S05R:
+Measured field = 999999 * calculated field
+3.26 seconds elapsed.
+------------------PA1_S07R:
+Measured field = 999999 * calculated field
+3.33 seconds elapsed.
+------------------PA1_S09R:
+Measured field = 999999 * calculated field
+3.22 seconds elapsed.
+------------------PA1_S11R:
+Measured field = -10.93 * calculated field
+3.28 seconds elapsed.
+------------------PA1_S13R:
+Measured field = 999999 * calculated field
+3.25 seconds elapsed.
+------------------PA1_S15R:
+Measured field = 1.7438 * calculated field
+3.28 seconds elapsed.
+------------------PA1_S17R:
+Measured field = 999999 * calculated field
+3.33 seconds elapsed.
+------------------PA1_S19R:
+Measured field = 3.9768 * calculated field
+3.26 seconds elapsed.
+------------------PA1_S21R:
+Measured field = 0.8440 * calculated field
+3.32 seconds elapsed.
+------------------PA1_S23R:
+Measured field = 0.5528 * calculated field
+3.27 seconds elapsed.
+------------------PA1_S25R:
+Measured field = 0.4324 * calculated field
+3.27 seconds elapsed.
+------------------PA1_S27R:
+Measured field = 0.4753 * calculated field
+3.26 seconds elapsed.
+------------------PA1_S29R:
+Measured field = 999999 * calculated field
+3.32 seconds elapsed.
+------------------PA1_S31R:
+Measured field = 999999 * calculated field
+3.25 seconds elapsed.
+------------------PA2_S01R:
+Measured field = 999999 * calculated field
+3.27 seconds elapsed.
+------------------PA2_S03R:
+Measured field = 999999 * calculated field
+3.27 seconds elapsed.
+------------------PA2_S05R:
+Measured field = 999999 * calculated field
+3.39 seconds elapsed.
+------------------PA2_S07R:
+Measured field = 999999 * calculated field
+3.29 seconds elapsed.
+------------------PA2_S09R:
+Measured field = 999999 * calculated field
+3.24 seconds elapsed.
+------------------PA2_S11R:
+Measured field = 999999 * calculated field
+3.27 seconds elapsed.
+------------------PA2_S13R:
+Measured field = -70.24 * calculated field
+3.32 seconds elapsed.
+------------------PA2_S15R:
+Measured field = -55.92 * calculated field
+3.24 seconds elapsed.
+------------------PA2_S17R:
+Measured field = 999999 * calculated field
+3.28 seconds elapsed.
+------------------PA2_S19R:
+Measured field = 2.7542 * calculated field
+3.26 seconds elapsed.
+------------------PA2_S21R:
+Measured field = 1.5956 * calculated field
+3.33 seconds elapsed.
+------------------PA2_S23R:
+Measured field = 0.7241 * calculated field
+3.26 seconds elapsed.
+------------------PA2_S25R:
+Measured field = 0.5460 * calculated field
+3.28 seconds elapsed.
+------------------PA2_S27R:
+Measured field = 0.6129 * calculated field
+3.31 seconds elapsed.
+------------------PA2_S29R:
+Measured field = 2.2165 * calculated field
+3.32 seconds elapsed.
+------------------PA2_S31R:
+Measured field = 999999 * calculated field
+3.26 seconds elapsed.
