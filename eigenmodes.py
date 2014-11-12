@@ -1,54 +1,55 @@
 #!/usr/bin/env python
 
-import time
 import matplotlib
 matplotlib.use('agg')   # headless
 import matplotlib.pyplot as plt
-from pylab import *
-import MDSplus
-import pickle
-import csv
 import os
 import numpy
 import math
-from fields import *
-from data_manipulation import *
-from signals import *
-from shotput import *
+from sympy import mpmath
+import numpy as np
 
-def top_shell_filaments(count):
-    major_radius = 0.92 
-    nominal_minor_radius = 0.16
-    shell_thickness = 0.004763
-    minor_radius = nominal_minor_radius + shell_thickness
-    shell_length = math.pi/float(2)*minor_radius
-    top_part = 0.0635
-    gap = (top_part + shell_length)/float(count)
-    top_part_filaments = [(i, minor_radius) for i in 
-                          numpy.arange(major_radius-top_part, major_radius, gap)]
-    angle_increment = gap/shell_length*math.pi/float(2)
-    curve_filaments = [(major_radius+minor_radius*math.cos(theta),
-                      minor_radius*math.sin(theta)) for theta in
-                      numpy.arange(0, math.pi/float(2), angle_increment)]
-    return curve_filaments + top_part_filaments
+import fields 
+import data_manipulation 
+import signals 
+import shotput
+import geometry
 
-def bottom_shell_filaments(count):
-    major_radius = 0.92 
-    nominal_minor_radius = 0.16
-    shell_thickness = 0.004763
-    minor_radius = nominal_minor_radius + shell_thickness
-    shell_length = math.pi/float(2)*minor_radius
-    gap = shell_length/float(count)
-    curve_filaments = [(major_radius+minor_radius*math.cos(theta),
-                       -minor_radius*math.sin(theta)) for theta in
-                       numpy.arange(0, math.pi/float(2), math.pi/(float(2)*count))]
-    return curve_filaments
+def resistivity_matrix(count):
+    rho_stainless_steel = 6.90e-7
+    return rho_stainless_steel*numpy.identity(count)
 
-coords = top_shell_filaments(40)+bottom_shell_filaments(40)
-x,y = zip(*coords)
-plt.plot(x, y, '.')
-plt.axis('equal')
-savefig(os.getcwd() + '/output/shell_filaments.png')
+
+def self_inductance(x, z, a):
+    return x*(math.log(8.*x/a)-1.75)
+
+
+def green(x, z, xc, zc):
+    k2 = 4*xc*x/((xc + x)**2 + (z - zc)**2)
+    return -math.sqrt(x*xc/k2)*((2-k2)*mpmath.ellipk(k2)-2*mpmath.ellipe(k2))
+
+
+def inductance((x1, z1), (x2, z2), a):
+    return self_inductance(x1, z1, a) if (x1,z1) == (x2,z2) \
+           else -green(x1, z1, x2, z2)
+
+
+def inductance_matrix(filaments):
+    count = len(filaments)
+    inductances = np.zeros((count, count))
+    for i in range(count):
+        for j in range(count):
+            inductances[i][j] = inductance(filaments[i], filaments[j], geometry.asize)
+    return inductances
+    
+
+geometry.plot_geometry()
+
+a = inductance_matrix(geometry.top_shell_filaments(10)
+                        +geometry.bottom_shell_filaments_mirror(10))
+print a
+print a.shape
+
 
 #for i, sensor in enumerate(sensors):
 #    startTime = time.time()
