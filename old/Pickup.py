@@ -1,1 +1,0 @@
-/home/byrne/APS_Work/2011_Shaping_Coil/Circuit_simulations/Pickup.py
