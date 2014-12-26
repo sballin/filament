@@ -1,8 +1,12 @@
 # filament
 
+### To-do
+
+- Clean up top level files
+
 ### Eigenmodes for a single shell
 
-![](resources/eigenmodes.svg)
+![](resources/eigenmodes.png)
 
 
 ### Code Structure
@@ -10,7 +14,7 @@
 - __reconstruct_ip.py__
 	- Calculates plasma current profile at each time point
 	- Saves a movie of current profile evolution
-- __TODO__
+- __MISSING LINK__ 
 	- Calculate least squares fit for eigenmodes to vacuum shot data
 - __eigenmodes.py__
 	- Calculates eigenmodes for stainless steel shells

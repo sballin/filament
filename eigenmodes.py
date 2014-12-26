@@ -107,6 +107,6 @@ modes_3 = eigenvecs[:, 4]
 plt.plot(range(len(modes_1)), modes_1, '.')
 plt.plot(range(len(modes_2)), modes_2, '.')
 plt.plot(range(len(modes_3)), modes_3, '.')
-plt.savefig(os.getcwd() + '/output/eigenmodes.pdf')
+plt.savefig(os.getcwd() + '/output/eigenmodes.png')
 
 
