@@ -4,3 +4,6 @@ output/
 *.c
 *.pyc
 .DS_Store
+Multi_pole_linear.py
+Pickup.py
+tmux*

@@ -15,7 +15,7 @@ from fields import *
 from data_manipulation import *
 from signals import *
 
-sensor_file = open('./sensors_unique.csv') # for all sensors use sensors_fb_p.csv
+sensor_file = open('./resources/sensors_unique.csv') # for all sensors use sensors_fb_p.csv
 blacklist = set(['TA01_S2R', 'TA02_S2R', 'TA03_S2R', 'TA04_S2R', 'TA05_S2R', 'TA06_S2R', 'TA07_S2R', 'TA08_S2R', 'TA09_S2R', 'TA10_S2R', 'FB02_S1P', 'FB05_S1P', 'FB06_S2P', 'FB03_S4R', 'FB08_S3R', 'PA1_S09P', 'PA1_S25P', 'PA2_S08P', 'PA2_S09P', 'PA2_S25P', 'PA1_S29R'])
 sensor_specs = csv.reader(sensor_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 for i in range(1): # skips first line
@@ -30,7 +30,7 @@ shot = 85140 #85140 # was 81077 (vf-only)
 tree = MDSplus.Tree('hbtep2', shot)
 (vf_time, vf_signal) = get_coil_time_signal(shot, 'VF')
 (oh_time, oh_signal) = get_coil_time_signal(shot, 'OH')
-with open('./coil_R_Z','r') as f:
+with open('./resources/coil_R_Z','r') as f:
     ((OHR, OHZ), (VFR, VFZ), (SHR, SHZ)) = pickle.load(f)
 
 if len(sys.argv) > 1:

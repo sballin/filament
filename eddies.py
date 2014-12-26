@@ -33,15 +33,15 @@ def plot_comparison(sensor, sensor_time, sensor_signal, vf_time, field_vals, sca
 
 
 # Get coil location data.
-with open('./coil_R_Z','r') as f:
+with open('./resources/coil_R_Z','r') as f:
     ((OHR,OHZ),(VFR,VFZ),(SHR,SHZ)) = pickle.load(f)
 
-sensor_file = open('./sensors_unique.csv') # was sensors_fb_p.csv
+sensor_file = open('./resources/sensors_unique.csv') # was sensors_fb_p.csv
 sensor_specs = csv.reader(sensor_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 for i in range(1): # skips first line
     next(sensor_specs)
 
-with open('./sensor_blacklistQian.txt') as f:
+with open('./resources/sensor_blacklistQian.txt') as f:
     bad_sensors = f.read()
 
 # [Sensor_ID]  [loc_x]  [loc_y]  [loc_z]  [n_x]  [n_y]  [n_z]

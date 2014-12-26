@@ -17,7 +17,7 @@ mu_0 = 4.0e-7*math.pi
 asize = 0.005
 
 # Get coil location data
-with open('./coil_R_Z', 'r') as f:
+with open('./resources/coil_R_Z', 'r') as f:
     ((OHR, OHZ), (VFR, VFZ), (SHR, SHZ)) = pickle.load(f)
 
 
