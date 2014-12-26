@@ -10,7 +10,6 @@ import pickle
 import fields 
 import data_manipulation 
 import signals
-import shotput
 
 conductSS = 1/72.0e-8
 mu_0 = 4.0e-7*math.pi

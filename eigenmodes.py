@@ -13,7 +13,6 @@ import pickle
 import fields 
 import data_manipulation 
 import signals 
-import shotput
 import geometry
 
 
