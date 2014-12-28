@@ -21,7 +21,7 @@ def greens_function(R, z, y, n_y, n_z):
     return 1e-7*R*(n_z*R_integral(R, y, z)+(n_y*z-n_z*y)*sin_integral(R, y, z))
 
 
-def B_signal(vf_signal, VFR, VFZ, sens_r, pos_z, n_r, n_z):
+def B_VF(vf_signal, VFR, VFZ, sens_r, pos_z, n_r, n_z):
     field_vals = [0 for i in vf_signal]
     for coil in range(len(VFR)):
         if VFR[coil] < 1.0:

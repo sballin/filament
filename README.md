@@ -2,11 +2,14 @@
 
 ### To-do
 
-- Clean up top level files
+Essential:
 
-### Eigenmodes for a single shell
+- Carry out fit_eigenmodes for one of the poloidal arrays
 
-![](resources/eigenmodes.png)
+Cosmetic: 
+
+- Combine signals, shotput, etc. into one file
+- Replace VFR, OHR, etc with geometry.VFR, geometry.OHR...
 
 
 ### Code Structure
@@ -14,10 +17,8 @@
 - __reconstruct_ip.py__
 	- Calculates plasma current profile at each time point
 	- Saves a movie of current profile evolution
-- __MISSING LINK__ 
-	- Calculate least squares fit for eigenmodes to vacuum shot data
-- __eddies.py__
-	- First attempt at comparing calculated and observed fields
+- __fit_eigenmodes.py__
+	- Calculates magnitude of eddy currents using eigenmodes
 - __eigenmodes.py__
 	- Calculates eigenmodes for stainless steel shells
 - __geometry.py__
@@ -34,4 +35,19 @@
 	- Defines `Sensor` class and methods to obtain coil and sensor timeseries data
 - __data_manipulation.py__
 	- Methods for trimming, formatting timeseries data
+
+
+### Eddy current magnitudes for unique sensors
+
+![](resources/I_mags.png)
+
+
+### Eigenmodes for a single shell
+
+![](resources/eigenmodes.png)
+
+
+### Initial current profile reconstruction
+
+![]()
 

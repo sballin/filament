@@ -41,11 +41,11 @@ def top_shell_filaments(count):
     return all_filaments 
 
 
-def bottom_shell_filaments_mirror(count):
+def bot_shell_filaments_mirror(count):
     return [(x,-z) for (x,z) in top_shell_filaments(count)]
 
 
-def bottom_shell_filaments(count):
+def bot_shell_filaments(count):
     '''Return coordinates of evenly spaced filaments along bottom shell'''
     major_radius = 0.92 
     nominal_minor_radius = 0.16

@@ -88,7 +88,7 @@ if not os.path.isfile('output/signals%d.p'%shot):
     for i,sensor in enumerate(sensors):
         (sensor_time, sensor_signal) = get_sensor_time_signal(shot, sensor.name)
         (sensor_time, sensor_signal) = clip(sensor_time, sensor_signal) # fix length
-        coils_signal = B_signal(vf_signal, VFR, VFZ, sensor.r, sensor.z, sensor.n_r, sensor.n_z)+OH_field(oh_signal, OHR, OHZ, sensor)
+        coils_signal = B_VF(vf_signal, VFR, VFZ, sensor.r, sensor.z, sensor.n_r, sensor.n_z)+OH_field(oh_signal, OHR, OHZ, sensor)
         for j in range(len(sensor_signal)):
             sensor_signal[j] -= coils_signal[j]
         signal_dict[sensor.name] = sensor_signal
@@ -109,7 +109,7 @@ end_time = 0.010 # when things become boring
 (times, ip) = read_data(tree, '.sensors.rogowskis:ip', t_start=0, t_end=end_time)
 i = 0
 image_index = 0
-gs = gridspec.GridSpec(2, 2,height_ratios=[5,1]) # was 2,1
+gs = gridspec.GridSpec(1, 2, height_ratios=[2,1]) # was 2,1
 while arbitrary_time[i] < end_time:
     if i%20 == 0: # frame spacing
         B = [signal_dict[sensor.name][i] for sensor in sensors]
@@ -123,12 +123,12 @@ while arbitrary_time[i] < end_time:
 #            I_sum += x
 #        plt.text(-3, 1.5, 'Sum of currents: %.2f'%I_sum)
 
-        plt.subplot(gs[0])#211
+        plt.subplot(211)#211 gs[0]
         plt.suptitle('Current profile for shot %d at %f s'%(shot, arbitrary_time[i]))
         plt.imshow(I_array)
         plt.colorbar()
 
-        plt.subplot(gs[1])#212
+        plt.subplot(212)#212 gs[1]
         plt.plot(oh_time, oh_signal, label='OH')
         plt.plot(vf_time, vf_signal, label='VF')
         plt.plot(times, ip, label='Ip')
@@ -138,10 +138,7 @@ while arbitrary_time[i] < end_time:
         plt.xlim(-.001, end_time)
         plt.axvline(arbitrary_time[i], color='r')
 
-        plt.subplot(gs[2])
-        plt.plot
-
-        savefig(current_dir + '/output/currents/%05d.png'%image_index)
+        savefig(os.getcwd() + '/output/currents/%05d.png'%image_index)
         image_index += 1
         plt.clf()
         sys.stdout.write("\r%05d.png (%f s)"%(image_index, arbitrary_time[i]))
