@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
 Copyright (C) Nikolaus Rath <Nikolaus@rath.org>

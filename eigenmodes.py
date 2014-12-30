@@ -9,11 +9,7 @@ import math
 from sympy import mpmath
 import numpy as np
 import pickle
-
-import fields 
-import data_manipulation 
-import signals 
-import geometry
+import tokamak
 
 
 class Filament:
@@ -32,7 +28,7 @@ def resistivity_matrix(count):
     conductSS = 1.38889e6
     thickSS = 0.0032
     shell_count = 8 # GUESS
-    conductance = (length_shell/float(shell_count)) * geometry.mu_0 * tauCoverageReduction * conductSS * thickSS
+    conductance = (length_shell/float(shell_count)) * tokamak.mu_0 * tauCoverageReduction * conductSS * thickSS
     resistance = 1/float(conductance)
     return resistance*numpy.identity(count)
 
@@ -59,7 +55,7 @@ def inductance_matrix(filaments):
         inductances = np.zeros((count, count))
         for i in range(count):
             for j in range(count):
-                inductances[i][j] = inductance(filaments[i], filaments[j], geometry.asize)
+                inductances[i][j] = inductance(filaments[i], filaments[j], tokamak.asize)
         pickle.dump(inductances, open('output/inductances%d.p' % count, 'wb'))
         return inductances
     else:
@@ -81,8 +77,8 @@ def get_currents(inductances, resistances):
 
 
 def ss_filaments(resolution):
-    top_coords = geometry.top_shell_filaments(resolution)
-    bot_coords = geometry.bot_shell_filaments_mirror(resolution)
+    top_coords = tokamak.top_shell_filaments(resolution)
+    bot_coords = tokamak.bot_shell_filaments_mirror(resolution)
     all_coords = top_coords + bot_coords
     inductances = inductance_matrix(all_coords)
     eigenvals, eigenvecs = get_currents(inductances, resistivity_matrix(inductances.shape[0]))
@@ -92,8 +88,8 @@ def ss_filaments(resolution):
 
 
 def save_test_plot():
-    filaments = geometry.bot_shell_filaments_mirror(63)
-    geometry.plot_geometry(filaments)
+    filaments = tokamak.bot_shell_filaments_mirror(63)
+    tokamak.plot_tokamak(filaments)
     inductances = inductance_matrix(filaments)
                           
     print inductances.shape
@@ -102,7 +98,7 @@ def save_test_plot():
     
     plt.subplot(221)
     plt.title('Filaments')
-    geometry.plot_geometry(filaments)
+    tokamak.plot_tokamak(filaments)
     
     plt.subplot(222)
     plt.title('Inductances')

@@ -6,10 +6,8 @@ import matplotlib.pyplot as plt
 import os
 import fields
 import data_manipulation 
-import signals
-import shotput
-import geometry
 import eigenmodes
+import tokamak
 
 
 def save_plot(sensor, sensor_time, sensor_signal, vf_time, field_vals, shot):
@@ -30,13 +28,14 @@ def save_plot(sensor, sensor_time, sensor_signal, vf_time, field_vals, shot):
 
 
 shot = 81077
-sensors, vf_time, vf_signal = shotput.shot_data(shot)
+vf_time, vf_signal = tokamak.vf_shot_data(shot)
+sensors = tokamak.sensors_PA(2)
 filaments = eigenmodes.ss_filaments(60)
 
 I_mags = []
 
 for i, sensor in enumerate(sensors):
-    (sensor_time, sensor_signal) = signals.get_sensor_time_signal(shot, sensor.name)
+    (sensor_time, sensor_signal) = tokamak.get_sensor_time_signal(shot, sensor.name)
     # Fix length of integrated data
     (sensor_time, sensor_signal) = data_manipulation.clip(sensor_time, sensor_signal) 
     # Radial TA sensors point inwards
@@ -45,7 +44,7 @@ for i, sensor in enumerate(sensors):
             sensor.n_r = -1.0
 
     # Calculate field
-    field_vals = fields.B_VF(vf_signal, geometry.VFR, geometry.VFZ, 
+    field_vals = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, 
                              sensor.r, sensor.z, sensor.n_r, sensor.n_z)
 
     # Calculate magnitude eddy current needed to create B_diff
