@@ -36,7 +36,12 @@
 ![](resources/eigenmodes.png)
 
 
-### Initial current profile reconstruction
+### Current profile reconstruction without eddy currents
 
-![]()
+![](resources/reconstruction.gif)
+
+
+### Magnetic field calculation example without eddy currents
+
+![](resources/PA2_S22P.png)
 
