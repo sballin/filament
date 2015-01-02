@@ -1,10 +1,13 @@
-from pylab import *
+import matplotlib.pyplot as plt
+import math
 import MDSplus
 import pickle
 import csv
+import sys
 import os
 import numpy
 import data_manipulation 
+import fields
 
 
 #shot_num = 81077
@@ -21,9 +24,9 @@ with open('./resources/coil_R_Z', 'r') as f:
 class Sensor:
     def __init__(self, name, x, y, z, n_x, n_y, n_z):
         self.name = name
-        self.r    = sqrt(float(x)**2+float(y)**2)
+        self.r    = math.sqrt(float(x)**2+float(y)**2)
         self.z    = float(z)
-        self.n_r  = sqrt(float(n_x)**2+float(n_y)**2)
+        self.n_r  = math.sqrt(float(n_x)**2+float(n_y)**2)
         self.n_z  = float(n_z)
 
 
@@ -58,13 +61,22 @@ def read_sensor_data(filename):
     for i in range(1): # skips first line
         next(sensor_specs)
     
-    with open('./resources/sensor_blacklistQian.txt') as f:
-        bad_sensors = f.read()
+    bad_sensors = blacklist_sean()
     
     # [Sensor_ID]  [loc_x]  [loc_y]  [loc_z]  [n_x]  [n_y]  [n_z]
     return [Sensor(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) 
             for row in sensor_specs if row[0] not in bad_sensors]
-    
+
+
+def blacklist_quian():
+    with open('./resources/sensor_blacklistQian.txt') as f:
+        return f.read()
+
+
+def blacklist_sean():
+    '''Based on data from certain VF-only shots, including 85140 and 81077'''
+    return {'TA01_S2R', 'TA02_S2R', 'TA03_S2R', 'TA04_S2R', 'TA05_S2R', 'TA06_S2R', 'TA07_S2R', 'TA08_S2R', 'TA09_S2R', 'TA10_S2R', 'FB02_S1P', 'FB05_S1P', 'FB06_S2P', 'FB03_S4R', 'FB08_S3R', 'PA1_S09P', 'PA1_S25P', 'PA2_S08P', 'PA2_S09P', 'PA2_S25P', 'PA1_S29R'}
+
 
 def vf_shot_data(shot_num):
     (vf_time, vf_signal) = get_coil_time_signal(shot_num, 'VF')
@@ -72,6 +84,36 @@ def vf_shot_data(shot_num):
     (vf_time, vf_signal) = data_manipulation.clip(vf_time, vf_signal) 
     return vf_time, vf_signal
 
+
+def sensor_signal_dict(shot, sensors, vf_signal, oh_signal, subtract):
+    if subtract:
+        outfile  = 'output/signals%dsubtracted.p' % shot
+    else:
+        outfile  = 'output/signals%d.p' % shot
+
+    if os.path.isfile(outfile):
+        signal_dict = pickle.load(open(outfile, 'rb'))
+        print 'DANGER: loaded %s from disk.' % outfile 
+    else:
+        print 'Indexing and cleaning up sensor signals.'
+        signal_dict = dict()
+        for i, sensor in enumerate(sensors):
+            (sensor_time, sensor_signal) = get_sensor_time_signal(shot, sensor.name)
+            # Fix length of integrated data
+            (sensor_time, sensor_signal) = data_manipulation.clip(sensor_time, sensor_signal) 
+            if subtract:
+                coils_signal = fields.B_VF(vf_signal, VFR, VFZ, sensor.r, sensor.z, sensor.n_r, sensor.n_z) + fields.OH_field(oh_signal, OHR, OHZ, sensor)
+                for j in range(len(sensor_signal)):
+                    sensor_signal[j] -= coils_signal[j]
+            signal_dict[sensor.name] = sensor_signal
+            progress = i/float(len(sensors))*100
+            sys.stdout.write('\r%.2f%%\n' % progress)
+            sys.stdout.flush()
+        print 'Sensors used:', len(sensors)
+        pickle.dump(signal_dict, open(outfile, 'wb'))
+        print 'Created ' + outfile
+    return signal_dict
+    
 
 def top_shell_filaments(count):
     '''Return coordinates of evenly spaced filaments along top shell'''

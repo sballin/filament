@@ -3,6 +3,11 @@
 ### To-do
 
 
+- IMPORTANT: confirm there are no timing differences between signals loaded
+- Color plotted I_mags or differences based on sensor group
+- Plot all discrepancies between calculated and observed B
+
+
 ### Code Structure
 
 - __reconstruct_ip.py__

@@ -15,7 +15,7 @@ if not os.path.isfile('output/G_matrices/G%d.p'%edge_gridpoints):
     print
 else:
     G_array = pickle.load(open('output/G_matrices/G%d.p'%edge_gridpoints, 'rb'))
-    print 'WARNING: loaded G%d.p from disk.'%edge_gridpoints
+    print 'DANGER: loaded G%d.p from disk.'%edge_gridpoints
 print 'Average value:', numpy.average(G_array)
 print 'Matrix rank:', linalg.matrix_rank(G_array)
 
