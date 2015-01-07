@@ -1,20 +1,19 @@
-from math import *
-from pylab import *
-from scipy import special, constants, integrate
+import math
+from scipy import integrate
 from sympy import mpmath
 
 
 def greens_function_integrate(R, z, y, n_y, n_z):
-    f = lambda phi: 1e-7*R*(n_y*z*sin(phi)+n_z*(R-y*sin(phi)))/pow(R**2+y**2+z**2-2*y*R*sin(phi), 3/2.0)
-    return integrate.quad(f, 0, 2*pi)[0]
+    f = lambda phi: 1e-7*R*(n_y*z*math.sin(phi)+n_z*(R-y*math.sin(phi)))/pow(R**2+y**2+z**2-2*y*R*math.sin(phi), 3/2.0)
+    return integrate.quad(f, 0, 2*math.pi)[0]
 
 
 def R_integral(R, y, z):
-    return (4*R*sqrt(R**2+y**2+z**2)*(float(mpmath.ellipe(pi/4, -((4*R*y)/(R**2-2*R*y+y**2+z**2))))/sqrt((R**2+y**2+z**2)/(R**2-2*R*y+y**2+z**2))+float(mpmath.ellipe(pi/4, (4*R*y)/(R**2+2*R*y+y**2+z**2)))/sqrt((R**2+y**2+z**2)/(R**2+2*R*y+y**2+z**2))))/((R**2-2*R*y+y**2+z**2)*(R**2+2*R*y+y**2+z**2))
+    return (4*R*math.sqrt(R**2+y**2+z**2)*(float(mpmath.ellipe(math.pi/4, -((4*R*y)/(R**2-2*R*y+y**2+z**2))))/math.sqrt((R**2+y**2+z**2)/(R**2-2*R*y+y**2+z**2))+float(mpmath.ellipe(math.pi/4, (4*R*y)/(R**2+2*R*y+y**2+z**2)))/math.sqrt((R**2+y**2+z**2)/(R**2+2*R*y+y**2+z**2))))/((R**2-2*R*y+y**2+z**2)*(R**2+2*R*y+y**2+z**2))
 
 
 def sin_integral(R, y, z):
-    return (2*(sqrt((R**2+y**2+z**2)/(R**2-2*R*y+y**2+z**2))*(R**4-2*R**3*y+2*R**2*(y**2+z**2)-2*R*y*(y**2+z**2)+(y**2+z**2)**2)*float(mpmath.ellipe(pi/4, -((4*R*y)/(R**2-2*R*y+y**2+z**2))))+(R**2+2*R*y+y**2+z**2)*((R**2+y**2+z**2)*sqrt((R**2+y**2+z**2)/(R**2+2*R*y+y**2+z**2))*float(mpmath.ellipe(pi/4, (4*R*y)/(R**2+2*R*y+y**2+z**2)))-(R**2-2*R*y+y**2+z**2)*(sqrt((R**2+y**2+z**2)/(R**2-2*R*y+y**2+z**2))*float(mpmath.ellipf(pi/4, -((4*R*y)/(R**2-2*R*y+y**2+z**2))))+sqrt((R**2+y**2+z**2)/(R**2+2*R*y+y**2+z**2))*float(mpmath.ellipf(pi/4, (4*R*y)/(R**2+2*R*y+y**2+z**2)))))))/(R*y*sqrt(R**2+y**2+z**2)*(R**2-2*R*y+y**2+z**2)*(R**2+2*R*y+y**2+z**2))
+    return (2*(math.sqrt((R**2+y**2+z**2)/(R**2-2*R*y+y**2+z**2))*(R**4-2*R**3*y+2*R**2*(y**2+z**2)-2*R*y*(y**2+z**2)+(y**2+z**2)**2)*float(mpmath.ellipe(math.pi/4, -((4*R*y)/(R**2-2*R*y+y**2+z**2))))+(R**2+2*R*y+y**2+z**2)*((R**2+y**2+z**2)*math.sqrt((R**2+y**2+z**2)/(R**2+2*R*y+y**2+z**2))*float(mpmath.ellipe(math.pi/4, (4*R*y)/(R**2+2*R*y+y**2+z**2)))-(R**2-2*R*y+y**2+z**2)*(math.sqrt((R**2+y**2+z**2)/(R**2-2*R*y+y**2+z**2))*float(mpmath.ellipf(math.pi/4, -((4*R*y)/(R**2-2*R*y+y**2+z**2))))+math.sqrt((R**2+y**2+z**2)/(R**2+2*R*y+y**2+z**2))*float(mpmath.ellipf(math.pi/4, (4*R*y)/(R**2+2*R*y+y**2+z**2)))))))/(R*y*math.sqrt(R**2+y**2+z**2)*(R**2-2*R*y+y**2+z**2)*(R**2+2*R*y+y**2+z**2))
 
 
 def greens_function(R, z, y, n_y, n_z):
@@ -23,7 +22,7 @@ def greens_function(R, z, y, n_y, n_z):
 
 def B_VF(vf_signal, VFR, VFZ, sens_r, pos_z, n_r, n_z):
     field_vals = [0 for i in vf_signal]
-    for coil in range(len(VFR)):
+    for coil in xrange(len(VFR)):
         if VFR[coil] < 1.0:
             current_dir = -1.0   # current reversed in inner coils
         else:
@@ -39,7 +38,7 @@ def B_VF(vf_signal, VFR, VFZ, sens_r, pos_z, n_r, n_z):
 
 def OH_field(oh_signal, OHR, OHZ, sensor):
     field_vals = [0 for i in oh_signal]
-    for coil in range(len(OHR)):
+    for coil in xrange(len(OHR)):
         current_dir = 1.0
         time = 0
         factor = greens_function(OHR[coil], OHZ[coil]-sensor.z, sensor.r, sensor.n_r, sensor.n_z)

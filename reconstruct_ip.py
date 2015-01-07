@@ -1,19 +1,22 @@
 #!/usr/bin/env python
 
-from scipy import linalg
+#from scipy import linalg
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import numpy
+import numpy.linalg as linalg
 import MDSplus
 import pickle
 import csv
 import os.path
 import sys
-from fields import *
+import fields 
 from data_manipulation import *
 import tokamak
+import eigenmodes
 
 
 sensors = tokamak.sensors_unique()
@@ -24,8 +27,6 @@ shot = 85140 # was 81077 (vf-only)
 tree = MDSplus.Tree('hbtep2', shot)
 (vf_time, vf_signal) = tokamak.get_coil_time_signal(shot, 'VF')
 (oh_time, oh_signal) = tokamak.get_coil_time_signal(shot, 'OH')
-with open('./resources/coil_R_Z','r') as f:
-    ((OHR, OHZ), (VFR, VFZ), (SHR, SHZ)) = pickle.load(f)
 
 if len(sys.argv) > 1:
     edge_gridpoints = int(sys.argv[1])
@@ -33,21 +34,41 @@ else:
     sys.exit('Please enter grid side dimension as an argument.')
 rows = len(sensors)
 columns = edge_gridpoints**2
-side_in_m = 0.10 # 0.15 for full view of cross-section
+side_in_m = 0.15 # 0.15 for full view of cross-section
 grid_spacing = side_in_m/float(edge_gridpoints)
-r_start = 0.92
-z_start = -0.5*side_in_m
+r_start = 0.88
+z_start = -0.35*side_in_m
 r_end = r_start+grid_spacing*edge_gridpoints
 z_end = z_start+grid_spacing*edge_gridpoints
-
 print 'Grid points:', columns
 print 'Grid spacing:', grid_spacing
 print 'R bounds:', r_start, r_end
 print 'Z bounds:', z_start, z_end
 print '--------------------------'
 
-execfile('g_matrix.py')
+# Load/create G matrix
+if os.path.isfile('output/G_matrices/G%d.p' % edge_gridpoints):
+    G_array = pickle.load(open('output/G_matrices/G%d.p' % edge_gridpoints, 'rb'))
+    print 'DANGER: loaded G%d.p from disk.' % edge_gridpoints
+else:
+    print 'Making G%d.p' % edge_gridpoints
+    G = [[0.0 for x in xrange(columns)] for x in xrange(rows)]
+    for i,sensor in enumerate(sensors):
+        for w in xrange(edge_gridpoints):
+            for h in xrange(edge_gridpoints):
+                r = r_start+w*grid_spacing
+                z = z_start+h*grid_spacing
+                G[i][h*edge_gridpoints+w] = 1e7*fields.greens_function(r, z-sensor.z, sensor.r, sensor.n_r, sensor.n_z) # 1e7 multiplication for matrix stuff
+        progress = i/float(rows)*100
+        sys.stdout.write('\r%.2f%%' %progress)
+        sys.stdout.flush()
+    G_array = numpy.array(G)
+    pickle.dump(G_array, open('output/G_matrices/G%d.p'%edge_gridpoints, 'wb'))
+    print
+print 'Average value:', numpy.average(G_array)
+print 'Matrix rank:', linalg.matrix_rank(G_array)
 
+# Verify G matrix inversion
 G_inv = linalg.pinv(G_array, sys.float_info.min)
 print 'G_inv dimensions:', G_inv.shape
 print 'Matrix rank:', linalg.matrix_rank(G_inv)
@@ -61,24 +82,42 @@ else:
     print 'This G matrix might not be amenable to inversion.'
 print '--------------------------'
 
+# Create comparison image for G and G_inv 
 plt.figure() # do not remove with rest of block
-plt.subplot(121)
+plt.subplot(223)
 plt.title('G%d' % edge_gridpoints)
 plt.imshow(G_array, interpolation='nearest')
 plt.ylabel('Sensors (0-%d)' % len(sensors))
 plt.xlabel('Current grid points')
 plt.colorbar()
-plt.subplot(122)
+plt.subplot(224)
 plt.title('pinv(G%d)' % edge_gridpoints)
 plt.imshow(G_inv, interpolation='nearest')
 plt.colorbar()
-
-savefig(os.getcwd() + '/output/G_matrices/G%d.png' % edge_gridpoints)
-print 'Created output/G_matrices/G%d.png' % edge_gridpoints
+plt.subplot(221)
+plt.title('Gridpoints')
+rs = []
+zs = []
+filaments = eigenmodes.ss_filaments(60)
+for w in xrange(edge_gridpoints):
+    for h in xrange(edge_gridpoints):
+        rs.append(r_start+w*grid_spacing)
+        zs.append(z_start+h*grid_spacing)
+plt.plot(rs, zs, 'ro')
+plt.plot([f.r for f in filaments], [f.z for f in filaments], 'o')
+plt.gcf().gca().add_artist(plt.Circle((0.92, 0), .15, color='turquoise'))
+plt.xlim([0.67, 1.17])
+plt.ylim([-0.19, 0.19])
+ax = plt.subplot(222, projection='3d')
+plt.title('Sensors used')
+ax.scatter([s.x for s in sensors], [s.y for s in sensors], [s.z for s in sensors], c='red', marker='o')
+plt.savefig(os.getcwd() + '/output/G_matrices/G%d.png' % edge_gridpoints)
 plt.clf()
+print 'Created output/G_matrices/G%d.png' % edge_gridpoints
 
 signal_dict = tokamak.sensor_signal_dict(shot, sensors, vf_signal, oh_signal, True)
 
+# Write image sequence
 print 'Outputting current images.'
 B = [0.0 for x in sensors]
 (arbitrary_time, sensor_signal) = tokamak.get_sensor_time_signal(shot, sensors[0].name)
@@ -101,12 +140,12 @@ while arbitrary_time[i] < end_time:
 #            I_sum += x
 #        plt.text(-3, 1.5, 'Sum of currents: %.2f'%I_sum)
 
-        plt.subplot(211)#211 gs[0]
+        plt.subplot(122)#211 gs[0]
         plt.suptitle('Current profile for shot %d at %f s' % (shot, arbitrary_time[i]))
         plt.imshow(I_array)
         plt.colorbar()
 
-        plt.subplot(212)#212 gs[1]
+        plt.subplot(121)#212 gs[1]
         plt.plot(oh_time, oh_signal, label='OH')
         plt.plot(vf_time, vf_signal, label='VF')
         plt.plot(times, ip, label='Ip')
@@ -116,16 +155,15 @@ while arbitrary_time[i] < end_time:
         plt.xlim(-.001, end_time)
         plt.axvline(arbitrary_time[i], color='r')
 
-        savefig(os.getcwd() + '/output/currents/%05d.png' % image_index)
+        plt.savefig(os.getcwd() + '/output/currents/%05d.png' % image_index)
         image_index += 1
         plt.clf()
         sys.stdout.write("\r%05d.png (%f s)" % (image_index, arbitrary_time[i]))
         sys.stdout.flush()
     i += 1
 print
+print '--------------------------'
 
 # Make video
 os.system('/usr/bin/ffmpeg -i output/currents/%%05d.png output/currents/shot%d_%dgridpoints.mp4' % (shot, edge_gridpoints**2))
-
-print '--------------------------'
-print 'Output output/currents/shot%d_%dgridpoints.mp4' % (shot, edge_gridpoints**2)
+print 'Created output/currents/shot%d_%dgridpoints.mp4' % (shot, edge_gridpoints**2)

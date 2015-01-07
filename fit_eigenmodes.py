@@ -10,10 +10,10 @@ import eigenmodes
 import tokamak
 
 
-def save_plot(sensor, sensor_time, sensor_signal, vf_time, field_vals, shot):
-    difference = [field_vals[i]-sensor_signal[i] for i in range(len(sensor_time))]
+def save_plot(sensor, sensor_time, sensor_signal, vf_time, field_vf, shot):
+    difference = [field_vf[i]-sensor_signal[i] for i in xrange(len(sensor_time))]
     plt.figure()
-    plt.plot(vf_time, field_vals, label='calculated field', color='blue')
+    plt.plot(vf_time, field_vf, label='calculated field', color='blue')
     plt.plot(sensor_time, sensor_signal, label='sensor data', color='red')
     plt.plot(sensor_time, difference, label='difference', color='green')
     plt.ylabel('Tesla')
@@ -36,8 +36,8 @@ def save_plot(sensor, sensor_time, sensor_signal, vf_time, field_vals, shot):
 os.system('rm -f output/eddy_images/*')
 
 shot = 81077
-vf_time, vf_signal = tokamak.vf_shot_data(shot)
-sensors = tokamak.sensors_unique()
+vf_time, vf_signal = tokamak.vf_data(shot)
+sensors = tokamak.sensors_all()
 filaments = eigenmodes.ss_filaments(60)
 
 I_mags = []
@@ -49,6 +49,7 @@ signals = tokamak.sensor_signal_dict(shot, sensors, None, None, False)
 (sensor_time, sensor_signal) = data_manipulation.clip(sensor_time, sensor_signal) 
 
 for i, sensor in enumerate(sensors):
+    print sensor.name
     sensor_signal = signals[sensor.name]
 
     # Radial TA sensors point inwards
@@ -57,12 +58,12 @@ for i, sensor in enumerate(sensors):
             sensor.n_r = -1.0
 
     # Calculate field
-    field_vals = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, 
-                             sensor.r, sensor.z, sensor.n_r, sensor.n_z)
+    field_vf = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, 
+                           sensor.r, sensor.z, sensor.n_r, sensor.n_z)
 
     # Calculate magnitude eddy current needed to create B_diff
-    B_diff = [field_vals[i]-sensor_signal[i] 
-              for i in range(len(sensor_time))]
+    B_diff = [field_vf[i]-sensor_signal[i] for i in xrange(len(sensor_time))]
+    B_diffs.append(B_diff)
     B_eddy = 0
     for f in filaments:
         B_eddy += (f.current_1 + f.current_2) \
@@ -71,18 +72,23 @@ for i, sensor in enumerate(sensors):
     I_mag = [B/B_eddy for B in B_diff]
     I_mags.append(I_mag)
 
-    # Print sensor name and save plot
-    print sensor.name
-    save_plot(sensor.name, sensor_time, sensor_signal, vf_time, field_vals, shot)
-    B_diffs.append([field_vals[i]-sensor_signal[i] for i in range(len(sensor_time))])
+    save_plot(sensor.name, sensor_time, sensor_signal, vf_time, field_vf, shot)
 
 # Plot current magnitudes
 plt.figure()
-for i in range(len(I_mags)):
+for i in xrange(len(I_mags)):
     name = sensors[i].name
     #if 'PA1_S32P' != name and 'PA1_S31P' != name and 'PA1_S30P' != name:
     #plt.plot(sensor_time, I_mags[i], label=sensors[i].name)
-    plt.plot(sensor_time, B_diffs[i])
+    if 'PA1' in name:
+        pltcolor = 'purple'
+    elif 'PA2' in name:
+        pltcolor = 'pink'
+    elif 'TA' in name:
+        pltcolor = 'turquoise'
+    elif 'FB' in name:
+        pltcolor = 'forestgreen'
+    plt.plot(sensor_time, B_diffs[i], color=pltcolor)
 plt.savefig(os.getcwd() + '/output/B_diffs.png')
 
 # Delete/recreate overview image

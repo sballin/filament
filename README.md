@@ -2,10 +2,9 @@
 
 ### To-do
 
-
 - IMPORTANT: confirm there are no timing differences between signals loaded
-- Color plotted I_mags or differences based on sensor group
-- Plot all discrepancies between calculated and observed B
+- Make "What is Going On" images for reconstruct_ip with LaTeX equations
+- Create ip_data method in tokamak
 
 
 ### Code Structure
@@ -46,7 +45,22 @@
 ![](resources/reconstruction.gif)
 
 
-### Magnetic field calculation example without eddy currents
+### Greens function matrix
+
+![](resources/G2.png)
+
+
+### Magnetic field calculations without eddy currents
 
 ![](resources/PA2_S22P.png)
+
+![](resources/montage.jpg)
+
+Sensors are color-coded:
+
+- Forest green: FB
+- Purple: PA
+- Turquoise: TA
+
+Note that some bad readings got past the blacklist I created. Gotta fix this.
 

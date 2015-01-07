@@ -24,8 +24,10 @@ with open('./resources/coil_R_Z', 'r') as f:
 class Sensor:
     def __init__(self, name, x, y, z, n_x, n_y, n_z):
         self.name = name
-        self.r    = math.sqrt(float(x)**2+float(y)**2)
+        self.x    = float(x)
+        self.y    = float(y)
         self.z    = float(z)
+        self.r    = math.sqrt(float(x)**2+float(y)**2)
         self.n_r  = math.sqrt(float(n_x)**2+float(n_y)**2)
         self.n_z  = float(n_z)
 
@@ -54,6 +56,20 @@ def sensors_PA(number):
             if 'PA' + str(number) in sensor.name]
 
 
+def sensors_TA():
+	return [sensor for sensor in read_sensor_data('./resources/sensors.csv')
+			if 'TA' in sensor.name]
+	
+
+def sensors_FB():
+	return [sensor for sensor in read_sensor_data('./resources/sensors.csv')
+			if 'FB' in sensor.name]
+
+
+def sensors_all():
+	return read_sensor_data('./resources/sensors.csv')
+
+
 def read_sensor_data(filename):
     sensor_file = open(filename) # was sensors_fb_p.csv
     sensor_specs = csv.reader(sensor_file, delimiter=',', quotechar='"', 
@@ -78,7 +94,7 @@ def blacklist_sean():
     return {'TA01_S2R', 'TA02_S2R', 'TA03_S2R', 'TA04_S2R', 'TA05_S2R', 'TA06_S2R', 'TA07_S2R', 'TA08_S2R', 'TA09_S2R', 'TA10_S2R', 'FB02_S1P', 'FB05_S1P', 'FB06_S2P', 'FB03_S4R', 'FB08_S3R', 'PA1_S09P', 'PA1_S25P', 'PA2_S08P', 'PA2_S09P', 'PA2_S25P', 'PA1_S29R'}
 
 
-def vf_shot_data(shot_num):
+def vf_data(shot_num):
     (vf_time, vf_signal) = get_coil_time_signal(shot_num, 'VF')
     # Fix length of integrated data
     (vf_time, vf_signal) = data_manipulation.clip(vf_time, vf_signal) 
@@ -103,13 +119,13 @@ def sensor_signal_dict(shot, sensors, vf_signal, oh_signal, subtract):
             (sensor_time, sensor_signal) = data_manipulation.clip(sensor_time, sensor_signal) 
             if subtract:
                 coils_signal = fields.B_VF(vf_signal, VFR, VFZ, sensor.r, sensor.z, sensor.n_r, sensor.n_z) + fields.OH_field(oh_signal, OHR, OHZ, sensor)
-                for j in range(len(sensor_signal)):
+                for j in xrange(len(sensor_signal)):
                     sensor_signal[j] -= coils_signal[j]
             signal_dict[sensor.name] = sensor_signal
             progress = i/float(len(sensors))*100
-            sys.stdout.write('\r%.2f%%\n' % progress)
+            sys.stdout.write('\r%.2f%%' % progress)
             sys.stdout.flush()
-        print 'Sensors used:', len(sensors)
+        print '\nSensors used:', len(sensors)
         pickle.dump(signal_dict, open(outfile, 'wb'))
         print 'Created ' + outfile
     return signal_dict
