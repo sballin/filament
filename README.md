@@ -31,7 +31,7 @@
 ### Eigenmodes for a single shell
 
 ![](resources/eigenmodes.png)
-![](resources/eigen_comparison.png)
+![](resources/eigen_comparison.jpg)
 
 
 ### Current profile reconstruction without eddy currents
