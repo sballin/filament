@@ -1,12 +1,5 @@
 # filament
 
-### To-do
-
-- IMPORTANT: confirm there are no timing differences between signals loaded
-- Make "What is Going On" images for reconstruct_ip with LaTeX equations
-- Create ip_data method in tokamak
-
-
 ### Code Structure
 
 - __reconstruct_ip.py__
@@ -38,6 +31,7 @@
 ### Eigenmodes for a single shell
 
 ![](resources/eigenmodes.png)
+![](resources/eigen_comparison.png)
 
 
 ### Current profile reconstruction without eddy currents
