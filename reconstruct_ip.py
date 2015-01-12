@@ -146,6 +146,7 @@ while arbitrary_time[i] < end_time:
         plt.subplot(222)
         plt.title('Plasma current (A)')
         plt.imshow(I_array)
+        plt.clim(-5e7, 5e7)
         plt.colorbar()
 
         plt.subplot(221)
