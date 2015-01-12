@@ -34,10 +34,10 @@ else:
     sys.exit('Please enter grid side dimension as an argument.')
 rows = len(sensors)
 columns = edge_gridpoints**2
-side_in_m = 0.15 # 0.15 for full view of cross-section
+side_in_m = 0.19 # 0.15 for full view of cross-section
 grid_spacing = side_in_m/float(edge_gridpoints)
-r_start = 0.88
-z_start = -0.35*side_in_m
+r_start = 0.85
+z_start = -0.40*side_in_m
 r_end = r_start+grid_spacing*edge_gridpoints
 z_end = z_start+grid_spacing*edge_gridpoints
 print 'Grid points:', columns
@@ -127,6 +127,8 @@ end_time = 0.010 # when things become boring
 i = 0
 image_index = 0
 gs = gridspec.GridSpec(1, 2, height_ratios=[2,1]) # was 2,1
+
+plot_constant = plt
 while arbitrary_time[i] < end_time:
     if i % 20 == 0: # frame spacing
         B = [signal_dict[sensor.name][i] for sensor in sensors]
@@ -140,12 +142,14 @@ while arbitrary_time[i] < end_time:
 #            I_sum += x
 #        plt.text(-3, 1.5, 'Sum of currents: %.2f'%I_sum)
 
-        plt.subplot(122)#211 gs[0]
         plt.suptitle('Current profile for shot %d at %f s' % (shot, arbitrary_time[i]))
+        plt.subplot(222)
+        plt.title('Plasma current (A)')
         plt.imshow(I_array)
         plt.colorbar()
 
-        plt.subplot(121)#212 gs[1]
+        plt.subplot(221)
+        plt.title('Coil currents and total Ip')
         plt.plot(oh_time, oh_signal, label='OH')
         plt.plot(vf_time, vf_signal, label='VF')
         plt.plot(times, ip, label='Ip')
@@ -155,6 +159,18 @@ while arbitrary_time[i] < end_time:
         plt.xlim(-.001, end_time)
         plt.axvline(arbitrary_time[i], color='r')
 
+        ax = plt.subplot(223, projection='3d')
+        plt.title('Sensors used')
+        ax.scatter([s.x for s in sensors], [s.y for s in sensors], [s.z for s in sensors], c='red', marker='o')
+
+        plt.subplot(224)
+        plt.title('Gridpoints')
+        plt.plot(rs, zs, 'ro')
+        plt.plot([f.r for f in filaments], [f.z for f in filaments], 'o')
+        plt.gcf().gca().add_artist(plt.Circle((0.92, 0), .15, color='turquoise'))
+        plt.xlim([0.67, 1.17])
+        plt.ylim([-0.19, 0.19])
+        plt.xlabel('m')
         plt.savefig(os.getcwd() + '/output/currents/%05d.png' % image_index)
         image_index += 1
         plt.clf()

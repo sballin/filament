@@ -31,6 +31,9 @@
 ### Eigenmodes for a single shell
 
 ![](resources/eigenmodes.png)
+
+Looked at the eigenmodes for different numbers of filaments. Worrying that they don't seem to converge at some filament count.
+
 ![](resources/eigen_comparison.jpg)
 
 

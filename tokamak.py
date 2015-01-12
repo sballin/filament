@@ -91,7 +91,10 @@ def blacklist_quian():
 
 def blacklist_sean():
     '''Based on data from certain VF-only shots, including 85140 and 81077'''
-    return {'TA01_S2R', 'TA02_S2R', 'TA03_S2R', 'TA04_S2R', 'TA05_S2R', 'TA06_S2R', 'TA07_S2R', 'TA08_S2R', 'TA09_S2R', 'TA10_S2R', 'FB02_S1P', 'FB05_S1P', 'FB06_S2P', 'FB03_S4R', 'FB08_S3R', 'PA1_S09P', 'PA1_S25P', 'PA2_S08P', 'PA2_S09P', 'PA2_S25P', 'PA1_S29R'}
+    return {'TA01_S2R', 'TA02_S2R', 'TA03_S2R', 'TA04_S2R', 'TA05_S2R', 'TA06_S2R', 
+			'TA07_S2R', 'TA08_S2R', 'TA09_S2R', 'TA10_S2R', 'FB02_S1P', 'FB05_S1P',
+			'FB06_S2P', 'FB03_S4R', 'FB08_S3R', 'PA1_S09P', 'PA1_S25P', 'PA2_S08P', 
+			'PA2_S09P', 'PA2_S25P', 'PA1_S29R'}
 
 
 def vf_data(shot_num):
@@ -118,7 +121,9 @@ def sensor_signal_dict(shot, sensors, vf_signal, oh_signal, subtract):
             # Fix length of integrated data
             (sensor_time, sensor_signal) = data_manipulation.clip(sensor_time, sensor_signal) 
             if subtract:
-                coils_signal = fields.B_VF(vf_signal, VFR, VFZ, sensor.r, sensor.z, sensor.n_r, sensor.n_z) + fields.OH_field(oh_signal, OHR, OHZ, sensor)
+                coils_signal = fields.B_VF(vf_signal, VFR, VFZ, sensor.r, 
+						                   sensor.z, sensor.n_r, sensor.n_z) \
+				               + fields.OH_field(oh_signal, OHR, OHZ, sensor)
                 for j in xrange(len(sensor_signal)):
                     sensor_signal[j] -= coils_signal[j]
             signal_dict[sensor.name] = sensor_signal
