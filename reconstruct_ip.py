@@ -128,7 +128,6 @@ i = 0
 image_index = 0
 gs = gridspec.GridSpec(1, 2, height_ratios=[2,1]) # was 2,1
 
-plot_constant = plt
 while arbitrary_time[i] < end_time:
     if i % 20 == 0: # frame spacing
         B = [signal_dict[sensor.name][i] for sensor in sensors]
@@ -163,6 +162,9 @@ while arbitrary_time[i] < end_time:
         ax = plt.subplot(223, projection='3d')
         plt.title('Sensors used')
         ax.scatter([s.x for s in sensors], [s.y for s in sensors], [s.z for s in sensors], c='red', marker='o')
+        #ax.view_init(30, angle)
+        #ax.axis('off')
+        plt.axis('equal')
 
         plt.subplot(224)
         plt.title('Gridpoints')

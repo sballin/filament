@@ -11,7 +11,7 @@ import os
 import numpy
 from fields import *
 from data_manipulation import *
-from signals import *
+from tokamak import *
 
 
 def get_avg_scaling(field_vals, sensor_signal, scaling_threshold):
@@ -88,7 +88,7 @@ for i,sensor in enumerate(sensors):
         if 'R' in sensor.name:
             sensor.n_r = -1.0
     # Calculate field.
-    field_vals = B_signal(vf_signal, VFR, VFZ, sensor.r, sensor.z, sensor.n_r, sensor.n_z)
+    field_vals = B_VF(vf_signal, VFR, VFZ, sensor.r, sensor.z, sensor.n_r, sensor.n_z)
     # Text output.
     avg_scaling = get_avg_scaling(field_vals, sensor_signal, scaling_threshold)
     print '------------------------------------------' + sensor.name + ':'

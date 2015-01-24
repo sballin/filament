@@ -1,4 +1,5 @@
 import math
+import numpy as np
 from scipy import integrate
 from sympy import mpmath
 
@@ -20,31 +21,18 @@ def greens_function(R, z, y, n_y, n_z):
     return 1e-7*R*(n_z*R_integral(R, y, z)+(n_y*z-n_z*y)*sin_integral(R, y, z))
 
 
-def B_VF(vf_signal, VFR, VFZ, sens_r, pos_z, n_r, n_z):
-    field_vals = [0 for i in vf_signal]
+def B_VF(vf_signal, VFR, VFZ, sensor):
+    G = 0
     for coil in xrange(len(VFR)):
-        if VFR[coil] < 1.0:
-            current_dir = -1.0   # current reversed in inner coils
-        else:
-            current_dir = 1.0
-        time = 0
-        factor = greens_function(VFR[coil], VFZ[coil]-pos_z, sens_r, n_r, n_z)
-        for current in vf_signal:
-            field = current*current_dir*factor
-            field_vals[time] += field
-            time += 1
-    return field_vals
+        if VFR[coil] < 1.0: current_dir = -1.0   # current reversed in inner coils
+        else: current_dir = 1.0
+        G += current_dir*greens_function(VFR[coil], VFZ[coil]-sensor.z, sensor.r, sensor.n_r, sensor.n_z)
+    return G*np.array(vf_signal)
 
 
 def OH_field(oh_signal, OHR, OHZ, sensor):
-    field_vals = [0 for i in oh_signal]
+    G = 0
     for coil in xrange(len(OHR)):
-        current_dir = 1.0
-        time = 0
-        factor = greens_function(OHR[coil], OHZ[coil]-sensor.z, sensor.r, sensor.n_r, sensor.n_z)
-        for current in oh_signal:
-            field = current*current_dir*factor
-            field_vals[time] += field
-            time += 1
-    return field_vals
+        G += greens_function(OHR[coil], OHZ[coil]-sensor.z, sensor.r, sensor.n_r, sensor.n_z)
+    return G*np.array(oh_signal)
 

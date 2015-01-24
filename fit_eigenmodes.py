@@ -8,6 +8,8 @@ import fields
 import data_manipulation 
 import eigenmodes
 import tokamak
+import plotly.plotly as plotly
+import time
 
 
 def save_plot(sensor, sensor_time, sensor_signal, vf_time, field_vf, shot):
@@ -37,7 +39,7 @@ os.system('rm -f output/eddy_images/*')
 
 shot = 81077
 vf_time, vf_signal = tokamak.vf_data(shot)
-sensors = tokamak.sensors_all()
+sensors = tokamak.sensors_unique()
 filaments = eigenmodes.ss_filaments(60)
 
 I_mags = []
@@ -58,16 +60,15 @@ for i, sensor in enumerate(sensors):
             sensor.n_r = -1.0
 
     # Calculate field
-    field_vf = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, 
-                           sensor.r, sensor.z, sensor.n_r, sensor.n_z)
+    field_vf = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, sensor)
 
     # Calculate magnitude eddy current needed to create B_diff
-    B_diff = [field_vf[i]-sensor_signal[i] for i in xrange(len(sensor_time))]
+    #B_diff = [field_vf[i]-sensor_signal[i] for i in xrange(len(sensor_time))]
+    B_diff = field_vf - sensor_signal
     B_diffs.append(B_diff)
     B_eddy = 0
     for f in filaments:
-        B_eddy += (f.current_1 + f.current_2) \
-                  *fields.greens_function(f.r, f.z-sensor.z, sensor.r,
+        B_eddy += f.current_1*fields.greens_function(f.r, f.z-sensor.z, sensor.r,
                                           sensor.n_r, sensor.n_z)
     I_mag = [B/B_eddy for B in B_diff]
     I_mags.append(I_mag)
@@ -75,11 +76,10 @@ for i, sensor in enumerate(sensors):
     save_plot(sensor.name, sensor_time, sensor_signal, vf_time, field_vf, shot)
 
 # Plot current magnitudes
-plt.figure()
+mpl_fig = plt.figure()
 for i in xrange(len(I_mags)):
     name = sensors[i].name
     #if 'PA1_S32P' != name and 'PA1_S31P' != name and 'PA1_S30P' != name:
-    #plt.plot(sensor_time, I_mags[i], label=sensors[i].name)
     if 'PA1' in name:
         pltcolor = 'purple'
     elif 'PA2' in name:
@@ -88,8 +88,13 @@ for i in xrange(len(I_mags)):
         pltcolor = 'turquoise'
     elif 'FB' in name:
         pltcolor = 'forestgreen'
-    plt.plot(sensor_time, B_diffs[i], color=pltcolor)
-plt.savefig(os.getcwd() + '/output/B_diffs.png')
+    plt.plot(sensor_time[0::20], I_mags[i][0::20], label=sensors[i].name, color=pltcolor)
+    #plt.plot(sensor_time, B_diffs[i], color=pltcolor)
+plt.title('Eddy current magnitude')
+plt.xlabel('s')
+plt.ylabel('A')
+plt.savefig(os.getcwd() + '/output/I_mags.png')
+#print plotly.plot_mpl(mpl_fig, filename="plotly version of an mpl figure")
 
 # Delete/recreate overview image
 os.system('rm -f output/eddy_images/montage.jpg')

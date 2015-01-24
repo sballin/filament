@@ -87,7 +87,7 @@ def ss_filaments(resolution):
     return [Filament(i, all_coords[i][0], all_coords[i][1], modes_1[i], modes_2[i]) for i in xrange(len(all_coords))]
 
 
-def save_test_plot(count):
+def save_test_plot(count, number):
     filaments = tokamak.top_shell_filaments(count)
     tokamak.plot_geometry(filaments)
     inductances = inductance_matrix(filaments)
@@ -97,7 +97,7 @@ def save_test_plot(count):
     plt.figure()
     
     plt.subplot(221)
-    plt.title('Filaments')
+    plt.title('%d filaments' % count)
     tokamak.plot_geometry(filaments)
     
     plt.subplot(222)
@@ -123,5 +123,12 @@ def save_test_plot(count):
     plt.plot(range(len(modes_1)), modes_1, '.')
     plt.plot(range(len(modes_2)), modes_2, '.')
     plt.plot(range(len(modes_3)), modes_3, '.')
-    plt.savefig(os.getcwd() + '/output/eigenmodes500.png')
+    plt.savefig(os.getcwd() + '/output/eigenmodes%05d.png' % number)
     
+
+#i = 0 
+#for n in xrange(20, 500, 20):
+#	save_test_plot(n, i)
+#	i += 1
+
+
