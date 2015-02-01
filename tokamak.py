@@ -43,6 +43,8 @@ def get_sensor_time_signal(shot, sensor):
     tree = MDSplus.Tree('hbtep2', shot)
     node_magnetic = tree.getNode('sensors.magnetic.' + sensor)
     (sensor_time, sensor_signal) = (node_magnetic.dim_of().data(), node_magnetic.data())
+    # Fix length of integrated data
+    (sensor_time, sensor_signal) = data_manipulation.clip(sensor_time, sensor_signal) 
     return (sensor_time, sensor_signal)
 
 
@@ -54,6 +56,11 @@ def sensors_PA(number):
     return [sensor for sensor 
             in read_sensor_data('./resources/sensors.csv')
             if 'PA' + str(number) in sensor.name]
+
+
+def sensors_PA():
+    return [sensor for sensor 
+            in read_sensor_data('./resources/sensors.csv') if 'PA' in sensor.name]
 
 
 def sensors_TA():

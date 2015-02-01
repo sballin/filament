@@ -3,36 +3,36 @@
 ### Code Structure
 
 - __reconstruct_ip.py__
-	- Calculates plasma current profile at each time point
+	- Plasma current profile at each time point
 	- Saves a movie of current profile evolution
 - __fit_eigenmodes.py__
-	- Calculates magnitude of eddy currents using eigenmodes
+	- Magnitude of eddy currents using eigenmodes
 - __eigenmodes.py__
-	- Calculates eigenmodes for stainless steel shells
+    - `Filament` class
+	- Eigenmodes for stainless steel shells
 - __tokamak.py__
-	- Defines `Sensor` class and methods to obtain coil and sensor timeseries data
+	- `Sensor` class and methods to obtain coil and sensor timeseries data
 	- Establishes geometry of stainless steel shells
 	- Loads VF shot data
-- __g_matrix.py__
-	- Calculates Green's functions between all sensors and coils
-	- Saves results in output/inductances(...).p to load in future
 - __fields.pyx__
-	- Can calculate magnetic field from a loop of current
-	- Sped up using Cython, must run `make` before using 
+	- Magnetic field from a loop of current
+	- Uses Cython, `make` before running
 - __data_manipulation.py__
 	- Methods for trimming, formatting timeseries data
 
 
-### Eddy current magnitudes for unique sensors
+### Eddy current magnitudes 
 
-![](resources/I_mags.png)
+![](resources/eddy_sensor_groups.jpg)
+
+Sensors with the same r, z positions around the tokamak seem to be in agreement, except for FB...S1P and FB...S4P.
 
 
 ### Eigenmodes for a single shell
 
 ![](resources/eigenmodes.png)
 
-Looked at the eigenmodes for different numbers of filaments. Worrying that they don't seem to converge at some filament count.
+Eigenmodes for different numbers of filaments. Differences seem to be in sign alone. Look at convergence of eigenvalues rather than eigenvector sign.
 
 ![](resources/eigen_comparison.jpg)
 
