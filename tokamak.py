@@ -30,6 +30,8 @@ class Sensor:
         self.r    = math.sqrt(float(x)**2+float(y)**2)
         self.n_r  = math.sqrt(float(n_x)**2+float(n_y)**2)
         self.n_z  = float(n_z)
+        self.eddy = []
+        self.vf   = []
 
 
 def get_coil_time_signal(shot, coil):

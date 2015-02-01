@@ -20,6 +20,11 @@
 - __data_manipulation.py__
 	- Methods for trimming, formatting timeseries data
 
+### Chi-squared distribution
+
+![](resources/chi_squares.png)
+![](resources/chi_squared.png)
+
 
 ### Eddy current magnitudes 
 
