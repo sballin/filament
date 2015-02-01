@@ -22,8 +22,8 @@
 
 ### Chi-squared distribution
 
-![](resources/chi_squares.png)
 ![](resources/chi_squared.png)
+![](resources/dchi_squared.png)
 
 
 ### Eddy current magnitudes 
