@@ -28,7 +28,9 @@ class Sensor:
         self.y    = float(y)
         self.z    = float(z)
         self.r    = math.sqrt(float(x)**2+float(y)**2)
-        self.n_r  = math.sqrt(float(n_x)**2+float(n_y)**2)
+        # Radial TA sensors point inwards
+        if 'TA' in name: self.n_r = -1.0
+        else: self.n_r  = math.sqrt(float(n_x)**2+float(n_y)**2)
         self.n_z  = float(n_z)
         self.eddy = []
         self.vf   = []
@@ -54,25 +56,9 @@ def sensors_unique():
     return read_sensor_data('./resources/sensors_unique.csv')
 
 
-def sensors_PA(number):
+def sensors(group):
     return [sensor for sensor 
-            in read_sensor_data('./resources/sensors.csv')
-            if 'PA' + str(number) in sensor.name]
-
-
-def sensors_PA():
-    return [sensor for sensor 
-            in read_sensor_data('./resources/sensors.csv') if 'PA' in sensor.name]
-
-
-def sensors_TA():
-    return [sensor for sensor in read_sensor_data('./resources/sensors.csv')
-            if 'TA' in sensor.name]
-    
-
-def sensors_FB():
-    return [sensor for sensor in read_sensor_data('./resources/sensors.csv')
-            if 'FB' in sensor.name]
+            in read_sensor_data('./resources/sensors.csv') if group in sensor.name]
 
 
 def sensors_all():
@@ -114,32 +100,37 @@ def vf_data(shot_num):
 
 
 def sensor_signal_dict(shot, sensors, vf_signal, oh_signal, subtract):
-    if subtract:
-        outfile  = 'output/signals%dsubtracted.p' % shot
-    else:
-        outfile  = 'output/signals%d.p' % shot
+    global signal_dict
 
-    if os.path.isfile(outfile):
-        signal_dict = pickle.load(open(outfile, 'rb'))
-        print 'DANGER: loaded %s from disk.' % outfile 
+    if subtract:
+        outfile = 'output/signals%dsubtracted.p' % shot
     else:
-        print 'Indexing and cleaning up sensor signals.'
-        signal_dict = dict()
-        for i, sensor in enumerate(sensors):
-            (sensor_time, sensor_signal) = get_sensor_time_signal(shot, sensor.name)
-            # Fix length of integrated data
-            (sensor_time, sensor_signal) = data_manipulation.clip(sensor_time, sensor_signal) 
-            if subtract:
-                coils_signal = fields.B_VF(vf_signal, VFR, VFZ, sensor)[:-1] \
-                               + fields.OH_field(oh_signal, OHR, OHZ, sensor)
-                sensor_signal -= coils_signal[:len(sensor_signal)]
-            signal_dict[sensor.name] = sensor_signal
-            progress = i/float(len(sensors))*100
-            sys.stdout.write('\r%.2f%%' % progress)
-            sys.stdout.flush()
-        print '\nSensors used:', len(sensors)
-        pickle.dump(signal_dict, open(outfile, 'wb'))
-        print 'Created ' + outfile
+        outfile = 'output/signals%d.p' % shot
+    
+    try:
+        return signal_dict
+    except NameError:
+        if os.path.isfile(outfile):
+            signal_dict = pickle.load(open(outfile, 'rb'))
+            print 'DANGER: loaded %s from disk.' % outfile 
+        else:
+            signal_dict = {}
+            print 'Indexing and cleaning up sensor signals.'
+            for i, sensor in enumerate(sensors):
+                (sensor_time, sensor_signal) = get_sensor_time_signal(shot, sensor.name)
+                # Fix length of integrated data
+                (sensor_time, sensor_signal) = data_manipulation.clip(sensor_time, sensor_signal) 
+                if subtract:
+                    coils_signal = fields.B_VF(vf_signal, VFR, VFZ, sensor)[:-1] \
+                                   + fields.OH_field(oh_signal, OHR, OHZ, sensor)
+                    sensor_signal -= coils_signal[:len(sensor_signal)]
+                signal_dict[sensor.name] = sensor_signal
+                progress = i/float(len(sensors))*100
+                sys.stdout.write('\r%.2f%%' % progress)
+                sys.stdout.flush()
+            print '\nSensors used:', len(sensors)
+            pickle.dump(signal_dict, open(outfile, 'wb'))
+            print 'Created ' + outfile
     return signal_dict
     
 
