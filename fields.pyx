@@ -30,6 +30,13 @@ def B_VF(vf_signal, VFR, VFZ, sensor):
     return G*np.array(vf_signal)
 
 
+def B_filaments(I_magnitude_timeseries, filaments, sensor):
+    G = 0
+    for f in filaments:
+        G += f.current_1*greens_function(f.r, f.z-sensor.z, sensor.r, sensor.n_r, sensor.n_z)
+    return G*np.array(I_magnitude_timeseries) 
+
+
 def OH_field(oh_signal, OHR, OHZ, sensor):
     G = 0
     for coil in xrange(len(OHR)):
