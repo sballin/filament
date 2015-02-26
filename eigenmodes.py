@@ -84,7 +84,7 @@ def ss_filaments(resolution):
     eigenvals, eigenvecs = get_currents(inductances, resistivity_matrix(inductances.shape[0]))
     modes_1 = eigenvecs[:, 2] 
     modes_2 = eigenvecs[:, 3] 
-    return [Filament(i, all_coords[i][0], all_coords[i][1], modes_1[i], modes_2[i]) for i in xrange(len(all_coords))]
+    return [Filament(i, all_coords[i][0], all_coords[i][1], modes_1[i], modes_2[i]) for i, x in enumerate(all_coords)]
 
 
 def save_test_plot(count, number):

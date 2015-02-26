@@ -1,35 +1,15 @@
 # filament
 
-### Code Structure
+![](resources/3d.png)
 
-- __reconstruct_ip.py__
-	- Plasma current profile at each time point
-	- Saves a movie of current profile evolution
-- __fit_eigenmodes.py__
-	- Magnitude of eddy currents using eigenmodes
-- __eigenmodes.py__
-    - `Filament` class
-	- Eigenmodes for stainless steel shells
-- __tokamak.py__
-	- `Sensor` class and methods to obtain coil and sensor timeseries data
-	- Establishes geometry of stainless steel shells
-	- Loads VF shot data
-- __fields.pyx__
-	- Magnetic field from a loop of current
-	- Uses Cython, `make` before running
-- __data_manipulation.py__
-	- Methods for trimming, formatting timeseries data
-
-### Chi-squared distribution
-
-![](resources/chi_squared.png)
+We model the eddy currents as loops going through the SS shells, colored from red to blue according to the first eigenmode. Poloidal sensors are orange, radial ones are blue.
 
 
-### Eddy current magnitudes 
+### Eddy current fit
 
-![](resources/eddy_sensor_groups.jpg)
+![](resources/eddy_montage.jpg)
 
-Sensors with the same r, z positions around the tokamak seem to be in agreement, except for FB...S1P and FB...S4P.
+For each sensor group, we find the difference between the calculated magnetic field from the VF coil and the mean sensor signal, and compare it to the eddy currents obtained from chi-squared minimization.
 
 
 ### Eigenmodes for a single shell
@@ -63,5 +43,26 @@ Sensors are color-coded:
 - Purple: PA
 - Turquoise: TA
 
-Note that some bad readings got past the blacklist I created. Gotta fix this.
+Note that some bad readings got past the blacklist I created. To do: fix.
+
+
+### Code Structure
+
+- __reconstruct_ip.py__
+	- Plasma current profile at each time point
+	- Saves a movie of current profile evolution
+- __fit_eigenmodes.py__
+	- Magnitude of eddy currents using eigenmodes
+- __eigenmodes.py__
+    - `Filament` class
+	- Eigenmodes for stainless steel shells
+- __tokamak.py__
+	- `Sensor` class and methods to obtain coil and sensor timeseries data
+	- Establishes geometry of stainless steel shells
+	- Loads VF shot data
+- __fields.pyx__
+	- Magnetic field from a loop of current
+	- Uses Cython, `make` before running
+- __data_manipulation.py__
+	- Methods for trimming, formatting timeseries data
 
