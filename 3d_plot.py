@@ -54,8 +54,8 @@ class Arrow3D(FancyArrowPatch):
         FancyArrowPatch.draw(self, renderer)
 
 
+scale = 7.0
 for s in sensors:
-    scale = 7.0
     if s.name[-1] == 'R': c = '#1E90FF'
     else: c = 'orange'
     if s.n_r == -1.0:
@@ -106,7 +106,7 @@ fig.tight_layout()
 ax.set_xlim3d(-lim, lim)
 ax.set_ylim3d(-lim, lim)
 ax.set_zlim3d(-0.6, 0.6)
-#ax.axis('off')
+ax.axis('off')
 
 ax.view_init(30, 30)
 

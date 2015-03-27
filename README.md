@@ -52,7 +52,7 @@ Note that some bad readings got past the blacklist I created. To do: fix.
 	- Plasma current profile at each time point
 	- Saves a movie of current profile evolution
 - __fit_eigenmodes.py__
-	- Magnitude of eddy currents using eigenmodes
+	- Find magnitude of eddy currents using eigenmodes
 - __eigenmodes.py__
     - `Filament` class
 	- Eigenmodes for stainless steel shells
@@ -65,4 +65,10 @@ Note that some bad readings got past the blacklist I created. To do: fix.
 	- Uses Cython, `make` before running
 - __data_manipulation.py__
 	- Methods for trimming, formatting timeseries data
+
+
+### Resources
+
+- [Intuition for the radial penetration of flux surface shaping in tokamaks](http://iopscience.iop.org/0741-3335/57/3/035006)
+- [8.02 Sources of Magnetic Fields](http://web.mit.edu/8.02t/www/802TEAL3D/visualizations/coursenotes/modules/guide09.pdf)
 

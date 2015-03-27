@@ -9,6 +9,7 @@ import data_manipulation
 import eigenmodes
 import tokamak
 import numpy as np
+import math
 import pickle
 import scipy
 import pylab
@@ -18,21 +19,21 @@ shot = 81077
 vf_time, vf_signal = tokamak.vf_data(shot)
 sensor_groups = []
 
-TA_suffixes = ['S1P', 'S2P', 'S3P', 'S4P']
-sensor_groups += [[s for s in tokamak.sensors('TA') if n in s.name] for n in TA_suffixes]
+#TA_suffixes = ['S1P', 'S2P', 'S3P', 'S4P']
+#sensor_groups += [[s for s in tokamak.sensors('TA') if n in s.name] for n in TA_suffixes]
 
 FB_suffixes = ['S1P', 'S2P', 'S3P', 'S4P', 'S1R', 'S2R', 'S3R', 'S4R', 'S4R']
 FB_bad = ['S1P', 'S4P']
 sensor_groups += [[s for s in tokamak.sensors('FB') if n in s.name] for n in FB_suffixes
                   if n not in FB_bad]
 
-PA_suffixes = ['S01R', 'S02R', 'S03R', 'S04R', 'S05R', 'S06R', 
-'S07R', 'S08R', 'S09R', 'S10R', 'S11R', 'S12R', 'S13R', 'S14R', 'S15R', 'S16R', 'S17R', 'S18R',
-'S19R', 'S20R', 'S21R', 'S01P', 'S02P', 'S03P', 'S04P', 'S05P', 'S06P', 'S07P', 'S08P', 'S09P', 
-'S10P', 'S11P', 'S12P', 'S13P', 'S14P', 'S15P', 'S16P', 'S17P', 'S18P', 'S19P', 'S20P', 'S21P']
-PA_bad = ['S10P', 'S11P', 'S13R', 'S14P', 'S08P']
-sensor_groups += [[s for s in tokamak.sensors('PA') if n in s.name] for n in PA_suffixes
-                  if n not in PA_bad]
+#PA_suffixes = ['S01R', 'S02R', 'S03R', 'S04R', 'S05R', 'S06R', 
+#'S07R', 'S08R', 'S09R', 'S10R', 'S11R', 'S12R', 'S13R', 'S14R', 'S15R', 'S16R', 'S17R', 'S18R',
+#'S19R', 'S20R', 'S21R', 'S01P', 'S02P', 'S03P', 'S04P', 'S05P', 'S06P', 'S07P', 'S08P', 'S09P', 
+#'S10P', 'S11P', 'S12P', 'S13P', 'S14P', 'S15P', 'S16P', 'S17P', 'S18P', 'S19P', 'S20P', 'S21P']
+#PA_bad = ['S10P', 'S11P', 'S13R', 'S14P', 'S08P']
+#sensor_groups += [[s for s in tokamak.sensors('PA') if n in s.name] for n in PA_suffixes
+#                  if n not in PA_bad]
 
 no_filaments = 20 
 filaments = eigenmodes.ss_filaments(no_filaments)
@@ -53,10 +54,8 @@ dChi_sq_dI = np.zeros((len(sensor_time), 2))
 for sensors in sensor_groups:
     if len(sensors) == 0: continue
 
-    (sensor_time, sensor_signal) = tokamak.get_sensor_time_signal(shot, sensors[0].name)
-
     print sensors[0].name[0:2] + sensors[0].name[4:8]
-
+    (sensor_time, sensor_signal) = tokamak.get_sensor_time_signal(shot, sensors[0].name)
     vf = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, sensors[0])
 
     if not loaded_G_eigs_1:
@@ -68,15 +67,14 @@ for sensors in sensor_groups:
     else: G_eig_1 = G_eigs_1[sensors[0].name]
 
     group_signals = [signals[s.name] for s in sensors]
-    for i, time in enumerate(sensor_time):       ## i in [0::STEP] IS THE BADNESS
+    for i, time in enumerate(sensor_time):
         measurement_sum = 0
         for signal in group_signals: 
             measurement_sum += signal[i]
         measure_avg = measurement_sum/float(len(group_signals))
         measure_stddev = np.std([s[i] for s in group_signals])
-        if measure_stddev != 0:
-            dChi_sq_dI[i][0] += -1*G_eig_1*(vf[i]-measure_avg)/measure_stddev**2
-            dChi_sq_dI[i][1] += G_eig_1**2/measure_stddev**2
+        dChi_sq_dI[i][0] += -1*G_eig_1*(vf[i]-measure_avg)/measure_stddev**2
+        dChi_sq_dI[i][1] += G_eig_1**2/measure_stddev**2
 
 I_eddy_time = np.zeros(len(sensor_time))
 for i in range(len(sensor_time)):
@@ -90,8 +88,10 @@ plt.figure()
 plt.plot(sensor_time, I_eddy_time)
 plt.ylabel('Eddy current magnitude (A)')
 plt.xlabel('Seconds')
+plt.xlim([.0015, .027])
+plt.ylim([-200, 50])
 plt.title('Eddy current magnitude over shot 81077')
-plt.savefig(os.getcwd() + '/output/I_eddy_time.png')
+plt.savefig('output/I_eddy_time.png')
 plt.clf()
 
 for sensors in sensor_groups:
