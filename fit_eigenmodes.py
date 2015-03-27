@@ -58,13 +58,14 @@ for sensors in sensor_groups:
     (sensor_time, sensor_signal) = tokamak.get_sensor_time_signal(shot, sensors[0].name)
     vf = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, sensors[0])
 
-    if not loaded_G_eigs_1:
+    if loaded_G_eigs_1:
+        G_eig_1 = G_eigs_1[sensors[0].name]
+    else:
         G_eig_1 = 0
         for f in filaments:
             G_eig_1 += f.current_1*fields.greens_function(f.r, f.z-sensors[0].z, sensors[0].r,
-                                                      sensors[0].n_r, sensors[0].n_z)
+                                                          sensors[0].n_r, sensors[0].n_z)
         G_eigs_1[sensors[0].name] = G_eig_1
-    else: G_eig_1 = G_eigs_1[sensors[0].name]
 
     group_signals = [signals[s.name] for s in sensors]
     for i, time in enumerate(sensor_time):
@@ -82,14 +83,50 @@ for i in range(len(sensor_time)):
 
 if not loaded_G_eigs_1: pickle.dump(G_eigs_1, open(outfile, 'wb'))
 
+print 'Caculating chi-squared values'
+
+chi_squares = np.zeros(len(I_eddy_time))
+for sensors in sensor_groups:
+    if len(sensors) == 0: continue
+
+    print sensors[0].name[0:2] + sensors[0].name[4:8]
+    (sensor_time, sensor_signal) = tokamak.get_sensor_time_signal(shot, sensors[0].name)
+    vf = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, sensors[0])
+
+    if loaded_G_eigs_1:
+        G_eig_1 = G_eigs_1[sensors[0].name]
+    else:
+        G_eig_1 = 0
+        for f in filaments:
+            G_eig_1 += f.current_1*fields.greens_function(f.r, f.z-sensors[0].z, sensors[0].r,
+                                                          sensors[0].n_r, sensors[0].n_z)
+        G_eigs_1[sensors[0].name] = G_eig_1
+
+    group_signals = [signals[s.name] for s in sensors]
+    for i, time in enumerate(sensor_time):
+        measurement_sum = 0
+        for signal in group_signals: 
+            measurement_sum += signal[i]
+        measure_avg = measurement_sum/float(len(group_signals))
+        measure_stddev = np.std([s[i] for s in group_signals])
+        chi_squares[i] += (vf[i] + I_eddy_time[i] - measure_avg)**2/measure_stddev**2
+
 print 'Making plots'
+
+plt.figure()
+plt.plot(sensor_time, chi_squares)
+plt.ylabel('Chi-squared value')
+plt.xlabel('Seconds')
+plt.xlim([.0015, .027])
+plt.title('Chi-squared values over shot 81077')
+plt.savefig('output/chi_squared_time.png')
+plt.clf()
 
 plt.figure()
 plt.plot(sensor_time, I_eddy_time)
 plt.ylabel('Eddy current magnitude (A)')
 plt.xlabel('Seconds')
 plt.xlim([.0015, .027])
-plt.ylim([-200, 50])
 plt.title('Eddy current magnitude over shot 81077')
 plt.savefig('output/I_eddy_time.png')
 plt.clf()
