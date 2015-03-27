@@ -104,17 +104,19 @@ for sensors in sensor_groups:
     B_VF = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, sensors[0])
     for i, sensor in enumerate(sensors):
         (sensor_time, sensor_signal) = tokamak.get_sensor_time_signal(shot, sensor.name)
-        B_diffs[i] = [B_VF[j] - sensor_signal[j] for j in xrange(len(sensor_time))]
+        B_diffs[i] = sensor_signal
 
     B_diff_avg = np.mean(B_diffs, axis=0)
     B_diff_sem = scipy.stats.sem(B_diffs, axis=0)
+
     B_eddy = fields.B_filaments(I_eddy_time, filaments, sensors[0])
+    B_composite = B_eddy + B_VF
 
     fig = plt.figure()
-    plt.errorbar(sensor_time, B_diff_avg, yerr=B_diff_sem, fmt='-', linewidth=2, ecolor='#006BB2', alpha=0.25, label='B_VF-<B_sensor>')
-    plt.plot(sensor_time, B_eddy, 'r-', label='B_eddy')
+    plt.errorbar(sensor_time, B_diff_avg, yerr=B_diff_sem, fmt='-', linewidth=2, ecolor='#006BB2', alpha=0.25, label='<B_sensor>')
+    plt.plot(sensor_time, B_composite, 'r-', label='B_VF+B_eddy')
+    plt.plot(sensor_time, B_VF, '--', label='B_VF')
     plt.xlim([.0015, .027])
-    plt.ylim([-.01, .01])
     plt.xlabel('Seconds')
     plt.ylabel('Magnetic field strength (Tesla)')
     plt.legend()
