@@ -2,6 +2,7 @@ import math
 import numpy as np
 from scipy import integrate
 from sympy import mpmath
+import tokamak
 
 
 def greens_function_integrate(R, z, y, n_y, n_z):
@@ -21,25 +22,29 @@ def greens_function(R, z, y, n_y, n_z):
     return 1e-7*R*(n_z*R_integral(R, y, z)+(n_y*z-n_z*y)*sin_integral(R, y, z))
 
 
-def B_VF(vf_signal, VFR, VFZ, sensor):
-    G = 0
-    for coil in xrange(len(VFR)):
-        if VFR[coil] < 1.0: current_dir = -1.0   # current reversed in inner coils
-        else: current_dir = 1.0
-        G += current_dir*greens_function(VFR[coil], VFZ[coil]-sensor.z, sensor.r, sensor.n_r, sensor.n_z)
-    return G*np.array(vf_signal)
-
-
-def B_filaments(I_magnitude_timeseries, filaments, sensor):
+def filament_field(I_magnitude_timeseries, filaments, sensor):
     G = 0
     for f in filaments:
         G += f.current_1*greens_function(f.r, f.z-sensor.z, sensor.r, sensor.n_r, sensor.n_z)
     return G*np.array(I_magnitude_timeseries) 
 
 
-def OH_field(oh_signal, OHR, OHZ, sensor):
+def coil_field(signal, coil, sensor):
+    if coil == 'VF':
+        coil_R = tokamak.VFR
+        coil_Z = tokamak.VFZ
+    elif coil == 'OH':
+        coil_R = tokamak.OHR
+        coil_Z = tokamak.OHZ
+    elif coil == 'SH':
+        coil_R = tokamak.SHR
+        coil_Z = tokamak.SHZ
     G = 0
-    for coil in xrange(len(OHR)):
-        G += greens_function(OHR[coil], OHZ[coil]-sensor.z, sensor.r, sensor.n_r, sensor.n_z)
-    return G*np.array(oh_signal)
+    current_dir = 1.0
+    for coil in xrange(len(coil_R)):
+        if coil == 'VF':
+            if coil_R[coil] < 1.0: current_dir = -1.0   # current reversed in inner coils
+            else: current_dir = 1.0
+        G += current_dir*greens_function(coil_R[coil], coil_Z[coil]-sensor.z, sensor.r, sensor.n_r, sensor.n_z)
+    return G*np.array(signal)
 

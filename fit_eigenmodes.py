@@ -16,7 +16,8 @@ import pylab
 
 
 shot = 81077
-vf_time, vf_signal = tokamak.vf_data(shot)
+coil = 'VF'
+coil_time, coil_signal = tokamak.coil_current(shot, coil)
 sensor_groups = []
 
 #TA_suffixes = ['S1P', 'S2P', 'S3P', 'S4P']
@@ -40,7 +41,10 @@ filaments = eigenmodes.ss_filaments(no_filaments)
 
 (sensor_time, sensor_signal) = tokamak.get_sensor_time_signal(shot, sensor_groups[0][0].name)
 
-signals = tokamak.sensor_signal_dict(shot, None, None, None, False)
+all_sensors = []
+for sensor_group in sensor_groups:
+	all_sensors += sensor_group
+signals = tokamak.sensor_signal_dict(shot, all_sensors, None, None, False)
 
 outfile = 'output/G_eigs_1.p'
 loaded_G_eigs_1 = True
@@ -56,7 +60,7 @@ for sensors in sensor_groups:
 
     print sensors[0].name[0:2] + sensors[0].name[4:8]
     (sensor_time, sensor_signal) = tokamak.get_sensor_time_signal(shot, sensors[0].name)
-    vf = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, sensors[0])
+    coil_field = fields.coil_field(coil_signal, coil, sensors[0])
 
     if loaded_G_eigs_1:
         G_eig_1 = G_eigs_1[sensors[0].name]
@@ -74,7 +78,7 @@ for sensors in sensor_groups:
             measurement_sum += signal[i]
         measure_avg = measurement_sum/float(len(group_signals))
         measure_stddev = np.std([s[i] for s in group_signals])
-        dChi_sq_dI[i][0] += -1*G_eig_1*(vf[i]-measure_avg)/measure_stddev**2
+        dChi_sq_dI[i][0] += -1*G_eig_1*(coil_field[i]-measure_avg)/measure_stddev**2
         dChi_sq_dI[i][1] += G_eig_1**2/measure_stddev**2
 
 I_eddy_time = np.zeros(len(sensor_time))
@@ -91,7 +95,7 @@ for sensors in sensor_groups:
 
     print sensors[0].name[0:2] + sensors[0].name[4:8]
     (sensor_time, sensor_signal) = tokamak.get_sensor_time_signal(shot, sensors[0].name)
-    vf = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, sensors[0])
+    coil_field = fields.coil_field(coil_signal, coil, sensors[0])
 
     if loaded_G_eigs_1:
         G_eig_1 = G_eigs_1[sensors[0].name]
@@ -109,7 +113,7 @@ for sensors in sensor_groups:
             measurement_sum += signal[i]
         measure_avg = measurement_sum/float(len(group_signals))
         measure_stddev = np.std([s[i] for s in group_signals])
-        chi_squares[i] += (vf[i] + I_eddy_time[i] - measure_avg)**2/measure_stddev**2
+        chi_squares[i] += (coil_field[i] + I_eddy_time[i] - measure_avg)**2/measure_stddev**2
 
 print 'Making plots'
 
@@ -118,7 +122,7 @@ plt.plot(sensor_time, chi_squares)
 plt.ylabel('Chi-squared value')
 plt.xlabel('Seconds')
 plt.xlim([.0015, .027])
-plt.title('Chi-squared values over shot 81077')
+plt.title('Chi-squared values over shot ' + shot)
 plt.savefig('output/chi_squared_time.png')
 plt.clf()
 
@@ -127,7 +131,7 @@ plt.plot(sensor_time, I_eddy_time)
 plt.ylabel('Eddy current magnitude (A)')
 plt.xlabel('Seconds')
 plt.xlim([.0015, .027])
-plt.title('Eddy current magnitude over shot 81077')
+plt.title('Eddy current magnitude over shot ' + shot)
 plt.savefig('output/I_eddy_time.png')
 plt.clf()
 
@@ -138,7 +142,7 @@ for sensors in sensor_groups:
     print suffix
 
     B_diffs = np.zeros((len(sensors), len(sensor_time)))
-    B_VF = fields.B_VF(vf_signal, tokamak.VFR, tokamak.VFZ, sensors[0])
+    B_coil = fields.coil_field(coil_signal, coil, sensors[0])
     for i, sensor in enumerate(sensors):
         (sensor_time, sensor_signal) = tokamak.get_sensor_time_signal(shot, sensor.name)
         B_diffs[i] = sensor_signal
@@ -146,13 +150,13 @@ for sensors in sensor_groups:
     B_diff_avg = np.mean(B_diffs, axis=0)
     B_diff_sem = scipy.stats.sem(B_diffs, axis=0)
 
-    B_eddy = fields.B_filaments(I_eddy_time, filaments, sensors[0])
-    B_composite = B_eddy + B_VF
+    B_eddy = fields.filament_field(I_eddy_time, filaments, sensors[0])
+    B_composite = B_eddy + B_coil
 
     fig = plt.figure()
     plt.errorbar(sensor_time, B_diff_avg, yerr=B_diff_sem, fmt='-', linewidth=2, ecolor='#006BB2', alpha=0.25, label='<B_sensor>')
-    plt.plot(sensor_time, B_composite, 'r-', label='B_VF+B_eddy')
-    plt.plot(sensor_time, B_VF, '--', label='B_VF')
+    plt.plot(sensor_time, B_composite, 'r-', label='B_' + coil + '+B_eddy')
+    plt.plot(sensor_time, B_coil, '--', label='B_' + coil)
     plt.xlim([.0015, .027])
     plt.xlabel('Seconds')
     plt.ylabel('Magnetic field strength (Tesla)')

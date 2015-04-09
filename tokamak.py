@@ -105,11 +105,11 @@ def blacklist_sean():
             'PA2_S09P', 'PA2_S25P', 'PA1_S29R'}
 
 
-def vf_data(shot_num):
-    (vf_time, vf_signal) = get_coil_time_signal(shot_num, 'VF')
+def coil_current(shot_num, coil):
+    (coil_time, coil_signal) = get_coil_time_signal(shot_num, coil)
     # Fix length of integrated data
-    (vf_time, vf_signal) = data_manipulation.clip(vf_time, vf_signal) 
-    return vf_time, vf_signal
+    (coil_time, coil_signal) = data_manipulation.clip(coil_time, coil_signal) 
+    return coil_time, coil_signal
 
 
 def sensor_signal_dict(shot, sensors, vf_signal, oh_signal, subtract):
